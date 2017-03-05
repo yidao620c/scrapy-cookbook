@@ -19,8 +19,16 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-
 import sphinx_rtd_theme
+import recommonmark
+from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
+
+source_parsers = {
+    '.md': CommonMarkParser
+}
+
+source_suffix = ['.rst', '.md']
 
 # -- General configuration ------------------------------------------------
 
@@ -40,11 +48,6 @@ templates_path = ['_templates']
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-from recommonmark.parser import CommonMarkParser
-source_parsers = {
-    '.md': CommonMarkParser,
-}
-source_suffix = ['.rst', '.md']
 
 # The master toctree document.
 master_doc = 'index'
@@ -158,5 +161,11 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-
+# At the bottom of conf.py
+def setup(app):
+    app.add_config_value('recommonmark_config', {
+            'url_resolver': lambda url: github_doc_root + url,
+            'auto_toc_tree_section': 'Contents',
+            }, True)
+    app.add_transform(AutoStructify)
 
