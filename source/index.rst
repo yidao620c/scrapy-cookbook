@@ -14,7 +14,7 @@ Contents:
    :glob:
 
    ./*
-   contact
+   other/contact
 
 
 Indices and tables
