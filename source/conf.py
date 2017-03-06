@@ -23,6 +23,8 @@ import sphinx_rtd_theme
 import recommonmark
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
+import sphinx.environment
+from docutils.utils import get_source_line
 
 source_parsers = {
     '.md': CommonMarkParser
@@ -45,6 +47,7 @@ extensions = []
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
@@ -112,17 +115,17 @@ htmlhelp_basename = 'scrapy-cookbookdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
-
 latex_elements={# The paper size ('letterpaper' or 'a4paper').
 'papersize':'a4paper',# The font size ('10pt', '11pt' or '12pt').
 'pointsize':'12pt','classoptions':',oneside','babel':'',#必須
 'inputenc':'',#必須
 'utf8extra':'',#必須
 # Additional stuff for the LaTeX preamble.
+# use fc-list :lang=zh to see available fonts
+# \usepackage{indentfirst}
+# \setlength{\parindent}{2em}
 'preamble': r"""
 \usepackage{xeCJK}
-\usepackage{indentfirst}
-\setlength{\parindent}{2em}
 \setCJKmainfont{WenQuanYi Micro Hei}
 \setCJKmonofont[Scale=0.9]{WenQuanYi Micro Hei Mono}
 \setCJKfamilyfont{song}{WenQuanYi Micro Hei}
@@ -136,9 +139,9 @@ latex_elements={# The paper size ('letterpaper' or 'a4paper').
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'scrapy-cookbook.tex', u'scrapy-cookbook Documentation',
-     u'Xiong Neng', 'manual'),
+     u'Xiong Neng', 'howto'),
 ]
-
+latex_engine = 'xelatex'
 
 # -- Options for manual page output ---------------------------------------
 
@@ -161,6 +164,7 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
+
 # At the bottom of conf.py
 def setup(app):
     app.add_config_value('recommonmark_config', {
@@ -169,3 +173,9 @@ def setup(app):
             }, True)
     app.add_transform(AutoStructify)
 
+
+def _warn_node(self, msg, node, **kwargs):
+    if not msg.startswith('nonlocal image URI found:'):
+        self._warnfunc(msg, '%s:%s' % get_source_line(node), **kwargs)
+
+sphinx.environment.BuildEnvironment.warn_node = _warn_node

@@ -2,12 +2,19 @@
 
 有时候爬取网站的时候需要登录，在Scrapy中可以通过模拟登录保存cookie后再去爬取相应的页面。这里我通过登录github然后爬取自己的issue列表来演示下整个原理。
 
-要想实现登录就需要表单提交，先通过浏览器访问github的登录页面<https://github.com/login>，然后使用浏览器调试工具来得到登录时需要提交什么东西。
-![](http://7qn9a8.com1.z0.glb.clouddn.com/scrapy01.png)
-我这里使用chrome浏览器的调试工具，F12打开后选择Network，并将Preserve log勾上。我故意输入错误的用户名和密码，得到它提交的form表单参数还有POST提交的UR
-![](http://7qn9a8.com1.z0.glb.clouddn.com/scrapy02.png)
-去查看html源码会发现表单里面有个隐藏的`authenticity_token`值，这个是需要先获取然后跟用户名和密码一起提交的。
-![](http://7qn9a8.com1.z0.glb.clouddn.com/scrapy03.png)
+要想实现登录就需要表单提交，先通过浏览器访问github的登录页面<https://github.com/login>，
+然后使用浏览器调试工具来得到登录时需要提交什么东西:
+
+![](/images/scrapy01.png)
+
+我这里使用chrome浏览器的调试工具，F12打开后选择Network，并将Preserve log勾上。
+我故意输入错误的用户名和密码，得到它提交的form表单参数还有POST提交的URL:
+
+![](/images/scrapy02.png)
+
+去查看html源码会发现表单里面有个隐藏的`authenticity_token`值，这个是需要先获取然后跟用户名和密码一起提交的:
+
+![](/images/scrapy03.png)
 
 ### 重写start_requests方法
 要使用cookie，第一步得打开它呀，默认scrapy使用`CookiesMiddleware`中间件，并且打开了。如果你之前禁止过，请设置如下

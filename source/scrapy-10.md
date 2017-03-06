@@ -11,7 +11,7 @@
 Scrapy构建于Twisted异步网络框架基础之上，因此你需要在Twisted reactor里面运行。
 
 首先你可以使用`scrapy.crawler.CrawlerProcess`这个类来运行你的spider，这个类会为你启动一个Twisted reactor，并能配置你的日志和shutdown处理器。所有的scrapy命令都使用这个类。
-``` python run.py
+``` python
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -28,7 +28,7 @@ python run.py
 ```
 
 另外一个功能更强大的类是`scrapy.crawler.CrawlerRunner`，推荐你使用这个
-``` python run.py
+``` python
 from twisted.internet import reactor
 import scrapy
 from scrapy.crawler import CrawlerRunner
@@ -77,7 +77,7 @@ reactor.run() # the script will block here until all crawling jobs are finished
 我们的需求是这样的，从两个不同的网站爬取我们所需要的新闻文章，然后存储到article表中。
 
 首先我们需要定义规则表和文章表，通过动态的创建蜘蛛类，我们以后就只需要维护规则表即可了。这里我使用SQLAlchemy框架来映射数据库。
-``` python models.py
+``` python
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
@@ -136,7 +136,7 @@ class Article(Base):
 
 ### 定义文章Item
 这个很简单了，没什么需要说明的
-``` python items.py
+``` python
 import scrapy
 
 
@@ -200,7 +200,7 @@ class ArticleSpider(CrawlSpider):
 
 ### 编写pipeline存储到数据库中
 我们还是使用SQLAlchemy来将文章Item数据存储到数据库中
-``` python pipelines.py
+``` python
 @contextmanager
 def session_scope(Session):
     """Provide a transactional scope around a series of operations."""
@@ -242,7 +242,7 @@ class ArticleDataBasePipeline(object):
 
 ### 修改run.py启动脚本
 我们将上面的run.py稍作修改即可定制我们的文章爬虫启动脚本
-``` python run.py
+``` python
 import logging
 from spiders.article_spider import ArticleSpider
 from twisted.internet import reactor

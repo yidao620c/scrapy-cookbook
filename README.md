@@ -6,4 +6,4 @@ Scrapy是python开发的著名爬虫框架，目前使用非常广泛。本教�
 
 * readthedocs:  <http://scrapy-cookbook.readthedocs.io/zh_CN/latest/>
 * github:       <https://github.com/yidao620c/core-scrapy>
-
+* PDF下载:       <http://pan.baidu.com/s/1nv0Rw6l>

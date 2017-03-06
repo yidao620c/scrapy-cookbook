@@ -47,7 +47,7 @@ $ apt-cache policy docker-engine
 ```
 
 安装
-``` bash docker engine
+``` bash
 $ sudo apt-get install docker-engine
 ```
 

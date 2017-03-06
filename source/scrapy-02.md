@@ -64,7 +64,7 @@ class HuxiuItem(scrapy.Item):
 它负责解析返回页面数据并提取出相应的Item（返回Item对象），还有其他合法的链接URL（返回Request对象）。
 
 我们在coolscrapy/spiders文件夹下面新建`huxiu_spider.py`，内容如下：
-``` python huxiu_spider.py
+``` python
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
