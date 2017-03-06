@@ -141,7 +141,9 @@ latex_documents = [
     (master_doc, 'scrapy-cookbook.tex', u'scrapy-cookbook Documentation',
      u'Xiong Neng', 'howto'),
 ]
-latex_engine = 'xelatex'
+
+# open for create pdf
+# latex_engine = 'xelatex'
 
 # -- Options for manual page output ---------------------------------------
 
