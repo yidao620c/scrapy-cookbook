@@ -1,4 +1,4 @@
-# Scrapy笔记05- Item详解
+# Scrapy教程05- Item详解
 
 Item是保存结构数据的地方，Scrapy可以将解析结果以字典形式返回，但是Python中字典缺少结构，在大型爬虫系统中很不方便。
 

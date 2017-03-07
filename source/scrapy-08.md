@@ -1,4 +1,4 @@
-# Scrapy笔记08- 文件与图片
+# Scrapy教程08- 文件与图片
 
 Scrapy为我们提供了可重用的[item pipelines](http://doc.scrapy.org/en/1.0/topics/item-pipeline.html)为某个特定的Item去下载文件。
 通常来说你会选择使用Files Pipeline或Images Pipeline。

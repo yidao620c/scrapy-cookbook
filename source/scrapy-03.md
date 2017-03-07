@@ -1,4 +1,4 @@
-# Scrapy笔记03- Spider详解
+# Scrapy教程03- Spider详解
 
 Spider是爬虫框架的核心，爬取流程如下：
 
