@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>每天15分钟玩转Scrapy06 - 媒体管道 &mdash; scrapy-cookbook 0.2.2 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="每天15分钟玩转Scrapy07 - 反爬" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html" />
+    <link rel="prev" title="每天15分钟玩转Scrapy05 - 动态页面" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy05%20-%20%E5%8A%A8%E6%80%81%E9%A1%B5%E9%9D%A2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            scrapy-cookbook
+          </a>
+              <div class="version">
+                0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy01%20-%20%E6%9E%B6%E6%9E%84%E5%85%A8%E6%99%AF%E4%B8%8E%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%88%AC%E8%99%AB.html">每天15分钟玩转Scrapy01 - 架构全景与第一个爬虫</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy02%20-%20Spider%20%E4%B8%8E%E9%80%89%E6%8B%A9%E5%99%A8.html">每天15分钟玩转Scrapy02 - Spider 与选择器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy03%20-%20%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%90%BD%E5%BA%93.html">每天15分钟玩转Scrapy03 - 数据建模与落库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy04%20-%20%E7%99%BB%E5%BD%95%E4%B8%8ECookie.html">每天15分钟玩转Scrapy04 - 登录与Cookie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy05%20-%20%E5%8A%A8%E6%80%81%E9%A1%B5%E9%9D%A2.html">每天15分钟玩转Scrapy05 - 动态页面</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">每天15分钟玩转Scrapy06 - 媒体管道</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">开场</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">媒体管道的两个约定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">现成管道与自定义扩展点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1. 先把管道装上</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2. 看它把文件落在哪</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3. 接管落盘路径</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4. 把失败也记下来</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">容易栽的跟头</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html">每天15分钟玩转Scrapy07 - 反爬</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy08%20-%20%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98.html">每天15分钟玩转Scrapy08 - 性能调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy09%20-%20%E5%BC%82%E6%AD%A5.html">每天15分钟玩转Scrapy09 - 异步</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy10%20-%20%E5%B7%A5%E7%A8%8B%E5%8C%96.html">每天15分钟玩转Scrapy10 - 工程化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy11%20-%20%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E7%BB%B4.html">每天15分钟玩转Scrapy11 - 部署与运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other/about.html">联系我</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scrapy-cookbook</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">每天15分钟玩转Scrapy06 - 媒体管道</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/每天15分钟玩转Scrapy06 - 媒体管道.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scrapy06">
+<h1>每天15分钟玩转Scrapy06 - 媒体管道<a class="headerlink" href="#scrapy06" title="此标题的永久链接">¶</a></h1>
+<section id="id1">
+<h2>开场<a class="headerlink" href="#id1" title="此标题的永久链接">¶</a></h2>
+<p>前面几篇取的都是文字。这一篇换个东西取，文件。</p>
+<p>图片和文件跟文字不一样。文字抓下来就是一段字符串，落地的事你自己安排。图片要发网络请求、要写磁盘、可能要顺带跑一遍缩略图，每一步都会慢，每一步都可能失败。</p>
+<p>我拿官方那个卖书的演示站从头试了一遍。<code class="docutils literal notranslate"><span class="pre">books.toscrape.com</span></code> 每本书都有封面，60 本书、60 张图，正好够练。</p>
+<p>跑通不难，坑全在细节上。比如有张图挂了，却没有一个人告诉你。再比如管道序号写错一格，图片路径永远进不了数据库，而数据看上去完全正常。</p>
+<p>说实话，这块的坑比前面几篇都隐蔽。你想想看，爬虫跑完了、item 也导出了、日志里一行红字都没有，可磁盘上就是少了几个文件。</p>
+<p>这一篇分两块。媒体管道的两个设计约定，以及三个够用的扩展点。</p>
+<p>每段输出还是真跑出来的，目录结构和统计数字我都贴出来。</p>
+</section>
+<section id="id2">
+<h2>媒体管道的两个约定<a class="headerlink" href="#id2" title="此标题的永久链接">¶</a></h2>
+<p>普通 item 走到管道里，就是一段内存里的数据，快得没有存在感。</p>
+<p>图片和文件不一样。它们要发网络请求、要落磁盘、可能要跑一遍缩略图，每一步都可能慢、都可能失败。把这种活塞进普通的 <code class="docutils literal notranslate"><span class="pre">process_item</span></code> 里，一个 item 卡在一张大图上，后面的 item 全排着。</p>
+<p>所以 Scrapy 把它们单独拎出来做成 <code class="docutils literal notranslate"><span class="pre">MediaPipeline</span></code>，两个关键设计。</p>
+<p><img alt="媒体管道的落盘链路" src="https://static.xiongneng.me/scrapy-06-media-flow-20260913062827.png" /></p>
+<p>一个设计是<strong>绕开调度器</strong>。媒体文件的请求不进请求队列，而是直接交给下载器中间件链，由 <code class="docutils literal notranslate"><span class="pre">engine.download_async()</span></code> 发出去。好处是它不占调度器的位置，也不经过 spider 中间件。</p>
+<p>⚠️ 但有个前提要钉死，<strong>它绕开的只是调度器，没绕开域的并发额度</strong>。图片下载和页面抓取抢的是同一批下行槽，<code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span></code> 一样管着它。这一点很容易想反，以为媒体走的是另一条快车道。</p>
+<p>我拿同一批 60 张图做过对照。并发压到 1、延迟设成 0.5 秒，63 个请求跑了 57.39 秒。并发放到 6、延迟清零，4.90 秒跑完。差了 11 倍多，慢的那次就是被延迟卡住的，一张图也没少。</p>
+<p>另一个设计是<strong>按 URL 去重，再加按 item 加锁</strong>。同一个图片地址在多个 item 里出现只下载一次，结果共享给所有等它的 item；一个 item 的媒体文件全部结束，这个 item 才继续往下走。后一条保证了你在 <code class="docutils literal notranslate"><span class="pre">item_completed</span></code> 里读到的结果一定是完整的，不会出现「一半图还在路上」这种中间状态。</p>
+<p>顺带说一句，这个去重是管道自己按请求指纹做的，跟调度器那个去重队列没有关系。所以在 <code class="docutils literal notranslate"><span class="pre">get_media_requests()</span></code> 里加不加 <code class="docutils literal notranslate"><span class="pre">dont_filter</span></code> 都一样。</p>
+<p>用法上只有一个硬约定，字段名必须叫这两个。</p>
+<p>| 用途 | 输入字段 | 输出字段 |
+|——|———-|———-|
+| 图片管道 | <code class="docutils literal notranslate"><span class="pre">image_urls</span></code> | <code class="docutils literal notranslate"><span class="pre">images</span></code> |
+| 文件管道 | <code class="docutils literal notranslate"><span class="pre">file_urls</span></code> | <code class="docutils literal notranslate"><span class="pre">files</span></code> |</p>
+<p>名字改了管道就找不到活干，而且它不报错，只是安静地什么都不做。你看，这是本篇第一个「静默失效」型的坑。</p>
+<p>字段之外还有一件事得说清楚。<code class="docutils literal notranslate"><span class="pre">image_urls</span></code> 里必须放<strong>绝对地址</strong>。列表页上的 <code class="docutils literal notranslate"><span class="pre">img</span> <span class="pre">src</span></code> 常常是相对路径，<code class="docutils literal notranslate"><span class="pre">media/cache/2c/da/xxx.jpg</span></code> 这种，直接丢给管道会下载失败。<code class="docutils literal notranslate"><span class="pre">response.urljoin()</span></code> 转一下再放进去。</p>
+<p>媒体管道和普通管道在一个 <code class="docutils literal notranslate"><span class="pre">ITEM_PIPELINES</span></code> 字典里，靠数字排序。</p>
+<p>| 数字 | 含义 |
+| 1 到 100 | 通常放下载前的准备类管道 |
+| 200 到 500 | 媒体管道放这一段 |
+| 500 以上 | 清洗、校验、写库 |</p>
+<p>顺序错了后果很具体。媒体管道排在写库管道后面，写库那一刻 <code class="docutils literal notranslate"><span class="pre">images</span></code> 字段还是空的，图片路径永远进不了数据库。数据看起来是对的，只是少了一列。</p>
+</section>
+<section id="id3">
+<h2>现成管道与自定义扩展点<a class="headerlink" href="#id3" title="此标题的永久链接">¶</a></h2>
+<section id="id4">
+<h3>1. 先把管道装上<a class="headerlink" href="#id4" title="此标题的永久链接">¶</a></h3>
+<p>最小的可用配置就三行。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ITEM_PIPELINES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"scrapy.pipelines.images.ImagesPipeline"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">IMAGES_STORE</span> <span class="o">=</span> <span class="s2">"media_store"</span>
+</pre></div>
+</div>
+<p>在书城列表页上抓前 3 页，只塞 <code class="docutils literal notranslate"><span class="pre">image_urls</span></code>，剩下的交给管道。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scrapy</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">bookmedia.items</span><span class="w"> </span><span class="kn">import</span> <span class="n">BookItem</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BookCoverSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"bookcovers"</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"books.toscrape.com"</span><span class="p">]</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"https://books.toscrape.com/"</span><span class="p">]</span>
+
+    <span class="n">max_pages</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">page_no</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"page_no"</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">"article.product_pod"</span><span class="p">):</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">card</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">"h3 a"</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">BookItem</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="n">price</span><span class="o">=</span><span class="n">card</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">"p.price_color::text"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="n">detail_url</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"href"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+                <span class="c1"># 字段名必须是 image_urls，而且是绝对地址</span>
+                <span class="n">image_urls</span><span class="o">=</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">card</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">"img::attr(src)"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">())],</span>
+            <span class="p">)</span>
+
+        <span class="n">nxt</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">"li.next a::attr(href)"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nxt</span> <span class="ow">and</span> <span class="n">page_no</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pages</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">response</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span>
+                <span class="n">nxt</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s2">"page_no"</span><span class="p">:</span> <span class="n">page_no</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span>
+            <span class="p">)</span>
+</pre></div>
+</div>
+<p>跑完看统计。</p>
+<p><img alt="默认的哈希命名与目录结构" src="https://static.xiongneng.me/scrapy-06-default-tree-20260913062827.png" /></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">'downloader/request_count'</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+<span class="s1">'elapsed_time_seconds'</span><span class="p">:</span> <span class="mf">4.898</span><span class="p">,</span>
+<span class="s1">'file_count'</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+<span class="s1">'file_status_count/downloaded'</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+<span class="s1">'item_scraped_count'</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+<span class="s1">'request_depth_max'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>64 个请求拆开看是 60 张图加 3 个列表页，多出来的那一个是 robots.txt。60 个 item、60 个文件，一个不差。</p>
+</section>
+<section id="id5">
+<h3>2. 看它把文件落在哪<a class="headerlink" href="#id5" title="此标题的永久链接">¶</a></h3>
+<p>默认的命名是 URL 的 sha1，归档之后没人认得出哪张是哪本。目录结构倒是挺清楚。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>media_store/
+├── full/            &lt;- 原图，文件名是 40 位哈希
+└── thumbs/
+    ├── small/       &lt;- 80x80 框
+    └── big/         &lt;- 160x160 框
+</pre></div>
+</div>
+<p>目录名不是配置项，是 <code class="docutils literal notranslate"><span class="pre">file_path()</span></code> 的返回值里带出来的。默认实现返回的是 <code class="docutils literal notranslate"><span class="pre">full/&lt;sha1&gt;.jpg</span></code>，<code class="docutils literal notranslate"><span class="pre">full/</span></code> 是这个函数写进去的。同理 <code class="docutils literal notranslate"><span class="pre">thumb_path()</span></code> 返回 <code class="docutils literal notranslate"><span class="pre">thumbs/&lt;档位&gt;/&lt;sha1&gt;.jpg</span></code>。</p>
+<p>缩略图的档位来自 <code class="docutils literal notranslate"><span class="pre">IMAGES_THUMBS</span></code>，键名就是目录名。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">IMAGES_THUMBS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"small"</span><span class="p">:</span> <span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
+    <span class="s2">"big"</span><span class="p">:</span> <span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这里有个容易误会的细节。<code class="docutils literal notranslate"><span class="pre">(80,</span> <span class="pre">80)</span></code> 不是「裁成 80 见方」，是<strong>等比缩放的上限框</strong>。原图 125x155 出来的是 64x80，不会变形也不会留白。</p>
+<p>顺手说两个开关。<code class="docutils literal notranslate"><span class="pre">IMAGES_EXPIRES</span></code> 是过期天数，默认 90 天，重复跑同一批图不会重复下载。<code class="docutils literal notranslate"><span class="pre">IMAGES_MIN_WIDTH</span></code> 和 <code class="docutils literal notranslate"><span class="pre">IMAGES_MIN_HEIGHT</span></code> 能挡掉尺寸太小的图，占位图和像素点就是这么过滤掉的。</p>
+</section>
+<section id="id6">
+<h3>3. 接管落盘路径<a class="headerlink" href="#id6" title="此标题的永久链接">¶</a></h3>
+<p>默认命名看不下去的时候，就继承管道改三个方法。这三个方法就是媒体管道的全部扩展点。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">itemadapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ItemAdapter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scrapy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scrapy.pipelines.images</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImagesPipeline</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_slug</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">48</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""把书名压成安全的文件名。中文直接保留，只清掉路径敏感字符。"""</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isalnum</span><span class="p">()</span> <span class="ow">or</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">"-_"</span><span class="p">:</span>
+            <span class="n">keep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">" </span><span class="se">\t</span><span class="s2">"</span><span class="p">:</span>
+            <span class="n">keep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"untitled"</span>
+    <span class="k">return</span> <span class="n">name</span><span class="p">[:</span><span class="n">maxlen</span><span class="p">]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NamedImagesPipeline</span><span class="p">(</span><span class="n">ImagesPipeline</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_media_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ItemAdapter</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"detail_url"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"image_urls"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+            <span class="c1"># 管道自己按请求指纹去重，不走调度器队列，所以 dont_filter 加不加都一样。</span>
+            <span class="c1"># 这里写出来只是表明「重复的图片 URL 不会被静默丢掉」这层意思。</span>
+            <span class="k">yield</span> <span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span>
+                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Referer"</span><span class="p">:</span> <span class="n">page</span><span class="p">}</span> <span class="k">if</span> <span class="n">page</span> <span class="k">else</span> <span class="p">{},</span>
+                <span class="n">dont_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">_slug</span><span class="p">(</span><span class="n">ItemAdapter</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">""</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">8</span><span class="p">]</span>
+        <span class="c1"># 目录自己定。默认实现返回 full/&lt;sha1&gt;.jpg，不写目录名文件就散在根下</span>
+        <span class="k">return</span> <span class="s2">"covers/</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">digest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ext</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ext</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"?"</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tail</span> <span class="ow">or</span> <span class="s2">"jpg"</span>
+</pre></div>
+</div>
+<p>改完再跑一遍，60 张图全部进了 <code class="docutils literal notranslate"><span class="pre">covers/</span></code>，文件名从哈希变成了「书名加短哈希」。中文书名完好，<code class="docutils literal notranslate"><span class="pre">isalnum()</span></code> 对汉字返回真。</p>
+<p><img alt="接管 file_path 之后的文件名" src="https://static.xiongneng.me/scrapy-06-custom-path-20260913062827.png" /></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>out/basic_store/
+├── covers/            60 张，A-Light-in-the-Attic-281d7495.jpg 这种
+└── thumbs/
+    ├── small/         60 张
+    └── big/           60 张
+</pre></div>
+</div>
+<p>有个细节值得留意。缩略图仍然落在 <code class="docutils literal notranslate"><span class="pre">thumbs/&lt;档位&gt;/</span></code> 下面，文件名还是哈希。因为缩略图走的是 <code class="docutils literal notranslate"><span class="pre">thumb_path()</span></code>，我没改它。想让缩略图也换名字，就一样重写 <code class="docutils literal notranslate"><span class="pre">thumb_path()</span></code>。</p>
+<p>⚠️ 这里有个 2.19 的新规矩。<strong>不要重写 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 去接 <code class="docutils literal notranslate"><span class="pre">store_uri</span></code></strong>。父类的 <code class="docutils literal notranslate"><span class="pre">from_crawler()</span></code> 是这么调你的，<code class="docutils literal notranslate"><span class="pre">cls(settings[&quot;IMAGES_STORE&quot;],</span> <span class="pre">crawler=crawler)</span></code>。你照抄老教程写一个 <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">__init__(self,</span> <span class="pre">store_uri,</span> <span class="pre">download_func,</span> <span class="pre">settings)</span></code>，<code class="docutils literal notranslate"><span class="pre">crawler</span></code> 这个关键字参数没地方接，管道直接起不来。需要初始状态就放在 <code class="docutils literal notranslate"><span class="pre">open_spider()</span></code> 里。</p>
+</section>
+<section id="id7">
+<h3>4. 把失败也记下来<a class="headerlink" href="#id7" title="此标题的永久链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">item_completed()</span></code> 收到的是「成功和失败混在一起」的结果列表。默认实现只挑出成功的写进 <code class="docutils literal notranslate"><span class="pre">images</span></code>，失败的往日志里打一行就完了。</p>
+<p>问题在于媒体文件的失败率并不低。防盗链、限流、超时，随便一个都能让图挂掉。而「这张图没下来」这件事如果没人记账，你只能靠数文件才发现少了。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">item_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ItemAdapter</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">ok</span><span class="p">,</span> <span class="n">bad</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">success</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+                <span class="n">ok</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="c1"># 失败项是 Twisted 的 Failure，直接 str() 会得到一整段 traceback</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"getErrorMessage"</span><span class="p">):</span>
+                <span class="n">bad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">getErrorMessage</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="n">adapter</span><span class="p">[</span><span class="s2">"images"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ok</span>
+        <span class="n">adapter</span><span class="p">[</span><span class="s2">"image_errors"</span><span class="p">]</span> <span class="o">=</span> <span class="n">bad</span>
+        <span class="k">return</span> <span class="n">item</span>
+</pre></div>
+</div>
+<p>故意塞一个不存在的地址试一下，三个 URL 里坏一个。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">'file_count'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="s1">'file_status_count/downloaded'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>导出的 item 里看到记账生效了。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://127.0.0.1:8412/image/1.png"</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"covers/混合好坏的图片集-82a839d6.png"</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">"checksum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"08bc85fb581f1551a146aaa240b6c610"</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"downloaded"</span><span class="p">}</span>
+<span class="p">],</span>
+<span class="nt">"image_errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"FileException: "</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>啰嗦一句 <code class="docutils literal notranslate"><span class="pre">image_errors</span></code> 这个字段。dataclass item 上写一个<strong>没声明过的</strong>字段不会报错，但它也不会被导出。字段得先在 item 里声明好，不然「记了账」和「没记账」看起来一模一样。</p>
+</section>
+</section>
+<section id="id8">
+<h2>容易栽的跟头<a class="headerlink" href="#id8" title="此标题的永久链接">¶</a></h2>
+<p><strong>坑 1：字段名写错，管道安静地什么都不干。</strong> 输入字段必须叫 <code class="docutils literal notranslate"><span class="pre">image_urls</span></code>，输出字段必须叫 <code class="docutils literal notranslate"><span class="pre">images</span></code>，文件管道对应 <code class="docutils literal notranslate"><span class="pre">file_urls</span></code> 和 <code class="docutils literal notranslate"><span class="pre">files</span></code>。名字改了管道就找不到活干，而且它不报错。我试过把 <code class="docutils literal notranslate"><span class="pre">image_urls</span></code> 写成 <code class="docutils literal notranslate"><span class="pre">img_urls</span></code>，爬虫正常跑完、item 正常导出，只是 <code class="docutils literal notranslate"><span class="pre">images</span></code> 那一列永远是空的。这类静默失效靠日志发现不了，只能靠统计里的 <code class="docutils literal notranslate"><span class="pre">file_count</span></code>。</p>
+<p><strong>坑 2：<code class="docutils literal notranslate"><span class="pre">image_urls</span></code> 里放相对地址。</strong> 列表页上的 <code class="docutils literal notranslate"><span class="pre">img</span> <span class="pre">src</span></code> 常常写成 <code class="docutils literal notranslate"><span class="pre">media/cache/2c/da/xxx.jpg</span></code>，直接丢给管道会下载失败。管道不会替你补全，得先用 <code class="docutils literal notranslate"><span class="pre">response.urljoin()</span></code> 转成绝对地址。</p>
+<p><strong>坑 3：图片管道没装 Pillow。</strong> <code class="docutils literal notranslate"><span class="pre">ImagesPipeline</span></code> 在构造时会去 import <code class="docutils literal notranslate"><span class="pre">PIL</span></code>，失败就抛 <code class="docutils literal notranslate"><span class="pre">NotConfigured(&quot;ImagesPipeline</span> <span class="pre">requires</span> <span class="pre">installing</span> <span class="pre">Pillow</span> <span class="pre">8.3.2</span> <span class="pre">or</span> <span class="pre">later&quot;)</span></code>。而 <code class="docutils literal notranslate"><span class="pre">NotConfigured</span></code> 在管道这一层的表现是<strong>这个管道被跳过</strong>，爬虫照跑、item 照样导出，只是 <code class="docutils literal notranslate"><span class="pre">images</span></code> 字段永远是空的。我当初就是这么踩进去的，装了 scrapy 却没装 extras，跑了两轮才发现盘上一张图都没有。2.18 起官方给了 extras，装的时候写 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;scrapy[images]&quot;</span></code> 就不会漏。</p>
+<p><strong>坑 4：媒体管道排在写库管道后面。</strong> <code class="docutils literal notranslate"><span class="pre">ITEM_PIPELINES</span></code> 里的数字越小越先执行。媒体管道放到 600、写库放到 300，写库那一刻 <code class="docutils literal notranslate"><span class="pre">images</span></code> 还没填上，路径永远进不了库。数据能入库、页面上看不出错，只是少了一列。<strong>媒体管道一律排在 200 段。</strong></p>
+<p><strong>坑 5：失败项直接 <code class="docutils literal notranslate"><span class="pre">str()</span></code> 打进日志。</strong> <code class="docutils literal notranslate"><span class="pre">item_completed</span></code> 收到的失败项是 Twisted 的 <code class="docutils literal notranslate"><span class="pre">Failure</span></code>，<code class="docutils literal notranslate"><span class="pre">str()</span></code> 出来是一整段 traceback。要拿一行可读的错误，用 <code class="docutils literal notranslate"><span class="pre">value.getErrorMessage()</span></code>，<code class="docutils literal notranslate"><span class="pre">value.type.__name__</span></code> 能给出异常类型。</p>
+<p><strong>坑 6：给 item 加了个没声明的字段。</strong> dataclass item 上写一个没声明过的字段不会报错，但它也不会被导出。我记图片失败用的那个 <code class="docutils literal notranslate"><span class="pre">image_errors</span></code>，是先在 item 类里声明了才出现在导出结果里的。你要是临时往实例上挂一个键，导出的文件里不会有这一列，于是「记了账」和「没记账」看起来一模一样。</p>
+<p><strong>坑 7：重写 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 去接 <code class="docutils literal notranslate"><span class="pre">store_uri</span></code>。</strong> 2.19 起父类的 <code class="docutils literal notranslate"><span class="pre">from_crawler()</span></code> 是这么调你的，<code class="docutils literal notranslate"><span class="pre">cls(settings[&quot;IMAGES_STORE&quot;],</span> <span class="pre">crawler=crawler)</span></code>。照抄老教程写一个 <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">__init__(self,</span> <span class="pre">store_uri,</span> <span class="pre">download_func,</span> <span class="pre">settings)</span></code>，<code class="docutils literal notranslate"><span class="pre">crawler</span></code> 这个关键字参数没地方接，管道直接起不来。需要初始状态就放在 <code class="docutils literal notranslate"><span class="pre">open_spider()</span></code> 里。</p>
+</section>
+<section id="id9">
+<h2>小结<a class="headerlink" href="#id9" title="此标题的永久链接">¶</a></h2>
+<p>这一篇就一件事，让文件稳稳当当地落在地上。</p>
+<p>两个约定记住了就够用。媒体请求绕开调度器，但没绕开域的并发额度。字段名必须叫 <code class="docutils literal notranslate"><span class="pre">image_urls</span></code> 和 <code class="docutils literal notranslate"><span class="pre">images</span></code>，改名等于关掉管道，而且没有任何提示。</p>
+<p>扩展点就三个。<code class="docutils literal notranslate"><span class="pre">get_media_requests</span></code> 管请求怎么发，<code class="docutils literal notranslate"><span class="pre">file_path</span></code> 管文件叫什么、放哪儿，<code class="docutils literal notranslate"><span class="pre">item_completed</span></code> 管收尾和记账。</p>
+<p>我自己的感受是，媒体管道这一块最值得花时间的地方不在下载，在记账。图的失败率天生比文字高，防盗链、限流、超时随便一个都能让图挂掉。把失败记进 item，后面排查才有线索。</p>
+<p>说到底，这事儿的难点不在把图抓下来，在抓不下来的时候你能知道。其实吧，字段名写错和管道顺序写错这两个最容易出问题的点，都是零报错的。日志里干干净净，统计里那几个数字才是唯一线索。</p>
+<p>这篇里要是有哪里讲得不对，欢迎拍砖。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy05%20-%20%E5%8A%A8%E6%80%81%E9%A1%B5%E9%9D%A2.html" class="btn btn-neutral float-left" title="每天15分钟玩转Scrapy05 - 动态页面" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html" class="btn btn-neutral float-right" title="每天15分钟玩转Scrapy07 - 反爬" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2017, Xiong Neng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

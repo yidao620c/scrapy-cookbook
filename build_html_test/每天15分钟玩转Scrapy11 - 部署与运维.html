@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>每天15分钟玩转Scrapy11 - 部署与运维 &mdash; scrapy-cookbook 0.2.2 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="联系我" href="other/about.html" />
+    <link rel="prev" title="每天15分钟玩转Scrapy10 - 工程化" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy10%20-%20%E5%B7%A5%E7%A8%8B%E5%8C%96.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            scrapy-cookbook
+          </a>
+              <div class="version">
+                0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy01%20-%20%E6%9E%B6%E6%9E%84%E5%85%A8%E6%99%AF%E4%B8%8E%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%88%AC%E8%99%AB.html">每天15分钟玩转Scrapy01 - 架构全景与第一个爬虫</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy02%20-%20Spider%20%E4%B8%8E%E9%80%89%E6%8B%A9%E5%99%A8.html">每天15分钟玩转Scrapy02 - Spider 与选择器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy03%20-%20%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%90%BD%E5%BA%93.html">每天15分钟玩转Scrapy03 - 数据建模与落库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy04%20-%20%E7%99%BB%E5%BD%95%E4%B8%8ECookie.html">每天15分钟玩转Scrapy04 - 登录与Cookie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy05%20-%20%E5%8A%A8%E6%80%81%E9%A1%B5%E9%9D%A2.html">每天15分钟玩转Scrapy05 - 动态页面</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy06%20-%20%E5%AA%92%E4%BD%93%E7%AE%A1%E9%81%93.html">每天15分钟玩转Scrapy06 - 媒体管道</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html">每天15分钟玩转Scrapy07 - 反爬</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy08%20-%20%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98.html">每天15分钟玩转Scrapy08 - 性能调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy09%20-%20%E5%BC%82%E6%AD%A5.html">每天15分钟玩转Scrapy09 - 异步</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy10%20-%20%E5%B7%A5%E7%A8%8B%E5%8C%96.html">每天15分钟玩转Scrapy10 - 工程化</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">每天15分钟玩转Scrapy11 - 部署与运维</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">开场</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">上线与运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#remotecontrol">1. RemoteControl 把进程打开一扇窗</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2. 部署的三种落点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bench">3. 用 bench 给机器量个底</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#scrapyd">用 scrapyd 把爬虫变成服务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">容易栽的跟头</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="other/about.html">联系我</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scrapy-cookbook</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">每天15分钟玩转Scrapy11 - 部署与运维</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/每天15分钟玩转Scrapy11 - 部署与运维.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scrapy11">
+<h1>每天15分钟玩转Scrapy11 - 部署与运维<a class="headerlink" href="#scrapy11" title="此标题的永久链接">¶</a></h1>
+<section id="id1">
+<h2>开场<a class="headerlink" href="#id1" title="此标题的永久链接">¶</a></h2>
+<p>这一篇讲爬虫跑起来之后的事。</p>
+<p>前面十篇都是在本机命令行里跑，你能看到每一个字。上线之后这层透明就没了。服务器上进程在不在、跑到哪一步了、报了什么错，你得有别的手段去知道。这一篇就是补上这些手段。</p>
+<p>内容分三块。第一块是怎么看见一个正在跑的爬虫，2.19 在这一块给了个新东西，我实测了一遍。第二块是怎么把爬虫从一台机器搬到一群机器上，我用 scrapyd 走了一遍完整链路，从打包到调度到取回数据。第三块是性能基线，<code class="docutils literal notranslate"><span class="pre">scrapy</span> <span class="pre">bench</span></code> 我这次真的跑通了，数字在下面。</p>
+<p>顺手说一句环境的事。这几节里的命令我是在 Windows 上跑的，涉及路径和权限的地方跟 Linux 有差别，我遇到差异会单独标出来。说实话这一篇里最容易踩的坑全都跟环境有关，跟 Scrapy 本身反倒关系不大。</p>
+</section>
+<section id="id2">
+<h2>上线与运维<a class="headerlink" href="#id2" title="此标题的永久链接">¶</a></h2>
+<p>爬虫上线之后，最想知道的一件事是它现在在干什么。</p>
+<p>这一章先解决「看见」，再解决「部署」，最后解决「量基线」。三件事的顺序不能反，因为你得先能看见，改完之后才知道自己改了什么。</p>
+<section id="remotecontrol">
+<h3>1. RemoteControl 把进程打开一扇窗<a class="headerlink" href="#remotecontrol" title="此标题的永久链接">¶</a></h3>
+<p>2.19 新增了一个默认启用的扩展，把运行的爬虫进程变成一个可查询、可执行的 HTTP 服务。</p>
+<p>它监听在 <code class="docutils literal notranslate"><span class="pre">localhost</span></code> 的随机端口上，要求 Bearer 令牌认证。端口和令牌写在一个 job 文件里，位置是系统状态目录下的 <code class="docutils literal notranslate"><span class="pre">scrapy/job_files</span></code>，Windows 上是 <code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%\scrapy\job_files</span></code>。</p>
+<p>我把目录改到项目里方便观察。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>scrapy<span class="w"> </span>crawl<span class="w"> </span>slowcrawl<span class="w"> </span>-s<span class="w"> </span><span class="nv">REMOTE_CONTROL_JOBS_DIR</span><span class="o">=</span>remotedir
+</pre></div>
+</div>
+<p>文件内容是 JSON，权限 0600。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"pid"</span><span class="p">:</span><span class="w"> </span><span class="mi">21500</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">59167</span><span class="p">,</span><span class="w"> </span><span class="nt">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"o5VQe..."</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"spider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"slowcrawl"</span><span class="p">,</span><span class="w"> </span><span class="nt">"project"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bookeng"</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"scrapy_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.19.0"</span><span class="p">,</span><span class="w"> </span><span class="nt">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="mf">1789233969.96</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>端口和令牌都拿到了，先查状态。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$TOK</span><span class="s2">"</span><span class="w"> </span><span class="s2">"http://127.0.0.1:</span><span class="nv">$PORT</span><span class="s2">/status"</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"pid"</span><span class="p">:</span><span class="w"> </span><span class="mi">19848</span><span class="p">,</span><span class="w"> </span><span class="nt">"spider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"slowcrawl"</span><span class="p">,</span><span class="w"> </span><span class="nt">"project"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bookeng"</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"scrapy_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.19.0"</span><span class="p">,</span><span class="w"> </span><span class="nt">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="mf">1789234165.05</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>不带令牌会拿到 401，这一条我也验了。</p>
+<p>真正有意思的是 <code class="docutils literal notranslate"><span class="pre">/execute</span></code>，它让你在那个进程里跑 Python。作用域里有两个东西，<code class="docutils literal notranslate"><span class="pre">crawler</span></code> 是当前爬虫实例，<code class="docutils literal notranslate"><span class="pre">stash</span></code> 是一个跨调用持久存在的字典。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$TOK</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span>@exec1.json<span class="w"> </span><span class="s2">"http://127.0.0.1:</span><span class="nv">$PORT</span><span class="s2">/execute"</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">exec1.json</span></code> 里是这段代码。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"spider:"</span><span class="p">,</span> <span class="n">crawler</span><span class="o">.</span><span class="n">spider</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"responses:"</span><span class="p">,</span> <span class="n">crawler</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s2">"response_received_count"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"scheduled:"</span><span class="p">,</span> <span class="n">crawler</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s2">"scheduler/enqueued"</span><span class="p">))</span>
+<span class="n">stash</span><span class="p">[</span><span class="s2">"note"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"remote-control-ok"</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"stash:"</span><span class="p">,</span> <span class="n">stash</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>返回是这样的。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spider: slowcrawl\nresponses: 4\nscheduled: 30\nstash: {'note': 'remote-control-ok'}\n"</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"traceback"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">"elapsed_sec"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>再调一次，换一段代码，验证 <code class="docutils literal notranslate"><span class="pre">stash</span></code> 是不是真的跨调用活着。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stash 还在: remote-control-ok\n已抓页面: 4\n引擎在跑: True\n"</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">"traceback"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">"elapsed_sec"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>三件事都对上了。实时统计能读到，<code class="docutils literal notranslate"><span class="pre">stash</span></code> 跨调用持久，<code class="docutils literal notranslate"><span class="pre">crawler.engine.running</span></code> 反映出引擎当前状态。</p>
+<p><img alt="RemoteControl 的四个端点" src="https://static.xiongneng.me/scrapy-11-remote-control-20260913062827.png" /></p>
+<p>⚠️ 有两件事必须提醒。第一，<strong>它能执行任意代码，等价于把解释器开在别人面前</strong>，虽然默认只监听 <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> 而且有令牌，但也别往公网地址上绑。第二，<strong>job 文件里就放着令牌</strong>，权限虽然设成了 0600，也绝对不要随手贴到聊天窗口或者 issue 里。</p>
+<p>这个扩展官方说是给 Scrapy MCP server 用的，也就是说你以后可以让 AI 直接通过这扇窗看你的爬虫。</p>
+</section>
+<section id="id3">
+<h3>2. 部署的三种落点<a class="headerlink" href="#id3" title="此标题的永久链接">¶</a></h3>
+<p>爬虫跑在本机和生产环境是两件事。第三种部署方式这里只讲选择依据，不展开操作。</p>
+<p>Scrapyd 是官方出的爬虫服务。它把项目打包上传、按需调度、在网页上看日志。适合一个团队共用几台机器跑很多爬虫的场景。配套的工具是 <code class="docutils literal notranslate"><span class="pre">scrapyd-client</span></code>，用它把项目打成 egg 再传上去。</p>
+<p>⚠️ 用 Scrapyd 之前先改一件事，<strong>它的监听地址默认是 <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code></strong>，也就是全网可达。生产环境务必改成内网地址，前面再套一层带认证的反向代理。</p>
+<p>容器是另一种落点。爬虫的依赖经常很啰嗦，浏览器、字体、系统库都算，打进镜像之后「在我机器上能跑」这句话才算作数。<code class="docutils literal notranslate"><span class="pre">JOBDIR</span></code> 记得挂到卷上，不然容器一重启进度就没了。</p>
+<p>再就是托管平台。官方的 Scrapy Cloud 属于这一类，把代码推上去就能跑。省事的地方在于不用管机器，代价是调试不如自己机器上方便，尤其是要抓需要浏览器的站点。</p>
+</section>
+<section id="bench">
+<h3>3. 用 bench 给机器量个底<a class="headerlink" href="#bench" title="此标题的永久链接">¶</a></h3>
+<p>调优之前得先有一个基线，不然你不知道自己改的到底是快了还是慢了。</p>
+<p>官方准备了一个命令。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>scrapy<span class="w"> </span>bench
+</pre></div>
+</div>
+<p>它的做法是起一个本机服务端，在一个固定地址上拉固定量的数据，默认跑 10 秒看能处理多少页面。</p>
+<p>我这次把它跑通了，逐秒的输出是这样。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">44</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">210</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">12600</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">45</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">394</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">11040</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">46</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">562</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">10080</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">47</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">722</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">9600</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">48</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">874</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">9120</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">49</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">1010</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">8160</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">52</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">1402</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">7680</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">53</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">logstats</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Crawled</span> <span class="mi">1522</span> <span class="n">pages</span> <span class="p">(</span><span class="n">at</span> <span class="mi">7200</span> <span class="n">pages</span><span class="o">/</span><span class="nb">min</span><span class="p">),</span> <span class="n">scraped</span> <span class="mi">0</span> <span class="n">items</span> <span class="p">(</span><span class="n">at</span> <span class="mi">0</span> <span class="n">items</span><span class="o">/</span><span class="nb">min</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>跑完的统计。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="s1">'elapsed_time_seconds'</span><span class="p">:</span> <span class="mf">10.159261299995705</span><span class="p">,</span>
+ <span class="s1">'finish_reason'</span><span class="p">:</span> <span class="s1">'closespider_timeout'</span><span class="p">,</span>
+ <span class="s1">'downloader/response_count'</span><span class="p">:</span> <span class="mi">1538</span><span class="p">,</span>
+ <span class="s1">'downloader/response_bytes'</span><span class="p">:</span> <span class="mi">10173928</span><span class="p">,</span>
+ <span class="s1">'scheduler/enqueued'</span><span class="p">:</span> <span class="mi">30758</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>十秒跑了一千五百多个响应，十兆字节。<strong>注意那个速率曲线是往下走的</strong>，第一秒一万两千多，到了第十秒掉到七千二。这是正常的，累积的排队和本机资源占用会一点点吃掉速度，所以拿这个数做横向比较的时候，要保证跑的是同样的时长，不然比出来的不是同一件事。</p>
+<p><img alt="bench 的逐秒速率曲线" src="https://static.xiongneng.me/scrapy-11-bench-20260913062827.png" /></p>
+<p>⚠️ 第一次跑它的时候我拿到的是这个。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2026-09-13 06:03:35 [scrapy.downloadermiddlewares.retry] ERROR: Gave up retrying &lt;GET http://localhost:8998?total=100000&amp;show=20&gt; (failed 3 times): 502 Bad Gateway
+ 'downloader/response_status_count/502': 1,
+</pre></div>
+</div>
+<p>重试三次全是 502，<code class="docutils literal notranslate"><span class="pre">bench</span></code> 直接失败退出。报错里没有任何一个字提到代理，那三个 502 看起来像是本机那个 8998 服务端出了问题。</p>
+<p>真实原因是我这台机器配了系统级 HTTP 代理，<code class="docutils literal notranslate"><span class="pre">bench</span></code> 内部发的请求走了代理，而代理当然不知道 <code class="docutils literal notranslate"><span class="pre">localhost:8998</span></code> 是什么，于是回了一个 502。把代理相关的环境变量清掉，或者把 <code class="docutils literal notranslate"><span class="pre">localhost</span></code> 加进 <code class="docutils literal notranslate"><span class="pre">NO_PROXY</span></code>，它就正常了。</p>
+<p><strong>这个坑值得单独记住，因为它会伪装成别的错误。</strong> 任何连本机端口的实验，跑之前都先确认代理有没有被绕开。我在前面几篇里搭的那些本地服务端，也是这样才跑通的。这事儿我当初没往代理上想，一直在查那个服务端，绕了一圈才回头发现。</p>
+<p>回到 <code class="docutils literal notranslate"><span class="pre">bench</span></code> 的定位。说到底它测的是框架在你机器上的吞吐上限，不是你那个具体蜘蛛的吞吐。蜘蛛的形状、目标站的响应速度、反爬策略都会大幅改变结果。<strong>有真实数据的时候以真实数据为准，<code class="docutils literal notranslate"><span class="pre">bench</span></code> 的用途是换机器、换配置之后的横向比较。</strong> 我自己的感受是，性能这件事上直觉的准确率低得让人意外，有个数字在手边会踏实很多。</p>
+</section>
+</section>
+<section id="scrapyd">
+<h2>用 scrapyd 把爬虫变成服务<a class="headerlink" href="#scrapyd" title="此标题的永久链接">¶</a></h2>
+<p>上一节把三种落点的特点过了一遍，这一节挑 scrapyd 走一条完整的链路，从打包到调度到取回数据。它是官方出的爬虫服务，适合一个团队共用几台机器跑很多爬虫的场景。</p>
+<p>装两个包，<code class="docutils literal notranslate"><span class="pre">scrapyd</span></code> 是服务端，<code class="docutils literal notranslate"><span class="pre">scrapyd-client</span></code> 是打包上传用的客户端。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>scrapyd<span class="w"> </span>scrapyd-client
+</pre></div>
+</div>
+<p>服务端要一份配置文件。默认端口是 6800，我换成 6801 避免跟别的东西撞上，监听地址明确写成 <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>。</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[scrapyd]</span>
+<span class="na">eggs_dir</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">eggs</span>
+<span class="na">logs_dir</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">logs</span>
+<span class="na">items_dir</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">items</span>
+<span class="na">jobs_to_keep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5</span>
+<span class="na">max_proc</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
+<span class="na">http_port</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">6801</span>
+<span class="na">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">127.0.0.1</span>
+</pre></div>
+</div>
+<p>起起来之后，日志里能看到它在做什么。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="n">scrapyd</span><span class="o">.</span><span class="n">app</span><span class="c1">#info] Scrapyd web console available at http://127.0.0.1:6801/</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="o">-</span><span class="p">]</span> <span class="n">Site</span> <span class="n">starting</span> <span class="n">on</span> <span class="mi">6801</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="n">Launcher</span><span class="p">]</span> <span class="n">Scrapyd</span> <span class="mf">1.6.0</span> <span class="n">started</span><span class="p">:</span> <span class="n">max_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">runner</span><span class="o">=</span><span class="s1">'scrapyd.runner'</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="n">scrapyd</span><span class="o">.</span><span class="n">launcher</span><span class="c1">#debug] Process slot 0 ready</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="n">scrapyd</span><span class="o">.</span><span class="n">launcher</span><span class="c1">#debug] Process slot 1 ready</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="n">scrapyd</span><span class="o">.</span><span class="n">launcher</span><span class="c1">#debug] Process slot 2 ready</span>
+<span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span><span class="n">T05</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">08</span><span class="o">+</span><span class="mi">0800</span> <span class="p">[</span><span class="n">scrapyd</span><span class="o">.</span><span class="n">launcher</span><span class="c1">#debug] Process slot 3 ready</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">max_proc</span></code> 是 4，下面四行是四个进程槽就位。<strong>这个数字决定了这台机器上同时能跑几个爬虫进程</strong>，它跟你蜘蛛内部的并发是两回事，一层是进程级的，一层是请求级的。</p>
+<p>⚠️ <code class="docutils literal notranslate"><span class="pre">bind_address</span></code> 这一行别省。scrapyd 的默认值是 <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code>，也就是全网可达，而它的 API 里有一个 <code class="docutils literal notranslate"><span class="pre">schedule</span></code> 接口可以让你启动任意已上传的爬虫。生产环境务必写成内网地址，前面再套一层带认证的反向代理。</p>
+<p>客户端那一侧改 <code class="docutils literal notranslate"><span class="pre">scrapy.cfg</span></code>。</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[settings]</span>
+<span class="na">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">dep.settings</span>
+
+<span class="k">[deploy]</span>
+<span class="na">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">http://127.0.0.1:6801/</span>
+<span class="na">project</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">dep</span>
+</pre></div>
+</div>
+<p>然后一条命令上传。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>scrapyd-deploy
+</pre></div>
+</div>
+<p>输出是这样的。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Packing</span> <span class="n">version</span> <span class="mi">1789250286</span>
+<span class="n">Deploying</span> <span class="n">to</span> <span class="n">project</span> <span class="s2">"dep"</span> <span class="ow">in</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">6801</span><span class="o">/</span><span class="n">addversion</span><span class="o">.</span><span class="n">json</span>
+<span class="n">Server</span> <span class="n">response</span> <span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+<span class="p">{</span><span class="s2">"project"</span><span class="p">:</span> <span class="s2">"dep"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"1789250286"</span><span class="p">,</span> <span class="s2">"spiders"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"ok"</span><span class="p">,</span> <span class="s2">"node_name"</span><span class="p">:</span> <span class="s2">"WIN-20260318JJX"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>版本号是打包那一刻的 Unix 时间戳，所以每次上传都是一个新版本，服务端会同时留着旧版本。回执里的 <code class="docutils literal notranslate"><span class="pre">spiders</span></code> 是它从这个包里认出来的蜘蛛数量。</p>
+<p>上传之后服务端的工作目录长这样。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── dbs/
+│   └── dep.db
+├── eggs/
+│   └── dep/1789250286.egg
+├── items/
+│   └── dep/quotes/
+├── logs/
+└── scrapyd.conf
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">eggs</span></code> 里是你上传的包，<code class="docutils literal notranslate"><span class="pre">dbs</span></code> 里是作业记录，<code class="docutils literal notranslate"><span class="pre">items</span></code> 和 <code class="docutils literal notranslate"><span class="pre">logs</span></code> 按项目和蜘蛛分层。</p>
+<p>接下来全走 HTTP 接口。四个查询接口先看一眼。</p>
+<p><img alt="scrapyd 的打包与调度链路" src="https://static.xiongneng.me/scrapy-11-scrapyd-flow-20260913062827.png" /></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:6801/listprojects.json
+curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"http://127.0.0.1:6801/listspiders.json?project=dep"</span>
+curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"http://127.0.0.1:6801/listversions.json?project=dep"</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"dep"</span><span class="p">],</span><span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span><span class="w"> </span><span class="nt">"node_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WIN-20260318JJX"</span><span class="p">}</span>
+<span class="p">{</span><span class="nt">"spiders"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"quotes"</span><span class="p">],</span><span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span><span class="w"> </span><span class="nt">"node_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WIN-20260318JJX"</span><span class="p">}</span>
+<span class="p">{</span><span class="nt">"versions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"1789250286"</span><span class="p">],</span><span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span><span class="w"> </span><span class="nt">"node_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WIN-20260318JJX"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>让它跑一次。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://127.0.0.1:6801/schedule.json<span class="w"> </span>-d<span class="w"> </span><span class="nv">project</span><span class="o">=</span>dep<span class="w"> </span>-d<span class="w"> </span><span class="nv">spider</span><span class="o">=</span>quotes
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"jobid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"285c5365aef511f18ad4c858b329b27d"</span><span class="p">,</span><span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span><span class="w"> </span><span class="nt">"node_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WIN-20260318JJX"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>拿到 jobid 之后查状态。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"pending"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nt">"running"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w"> </span><span class="nt">"finished"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"285c5365aef511f18ad4c858b329b27d"</span><span class="p">,</span><span class="w"> </span><span class="nt">"project"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dep"</span><span class="p">,</span><span class="w"> </span><span class="nt">"spider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"quotes"</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-09-13 05:59:02.444967"</span><span class="p">,</span><span class="w"> </span><span class="nt">"end_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-09-13 05:59:05.898301"</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">"log_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/logs/dep/quotes/285c5365aef511f18ad4c858b329b27d.log"</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">"items_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/items/dep/quotes/285c5365aef511f18ad4c858b329b27d.jl"</span><span class="p">}],</span>
+<span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span><span class="w"> </span><span class="nt">"node_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WIN-20260318JJX"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>任务跑完了，起止时间、日志地址、数据地址都在里面。这两个 URL 可以直接拼上服务端地址去下载，抓到的数据就在那个 <code class="docutils literal notranslate"><span class="pre">.jl</span></code> 文件里，一行一条 JSON。</p>
+<p>⚠️ 这里有个数字值得注意。任务的墙钟耗时是三秒半，而任务日志里那一行是 <code class="docutils literal notranslate"><span class="pre">'elapsed_time_seconds':</span> <span class="pre">1.3554213000024902</span></code>。<strong>差了大约两秒，那是进程启动和 egg 解包的开销。</strong> 也就是说 <code class="docutils literal notranslate"><span class="pre">elapsed_time_seconds</span></code> 量的是蜘蛛自己的运行时间，不含调度开销。你要是拿它估算「跑一千个任务要多久」，会明显低估。</p>
+<p>三个东西一起构成了这套方案的可用性。<code class="docutils literal notranslate"><span class="pre">eggs</span></code> 目录让回滚变成「切一个版本号」，<code class="docutils literal notranslate"><span class="pre">logs</span></code> 目录让每个任务的输出都能事后翻，<code class="docutils literal notranslate"><span class="pre">items</span></code> 目录让数据不用你自己写管道去落盘。代价是它只负责调度，任务的依赖、环境、出口 IP 这些还是得你自己在机器上准备好。</p>
+<p>关于容器和托管平台，我在这个环境里没有 Docker 可用，所以那两条路径只写选择依据，不给操作步骤。这里要如实说清楚，避免你把没验证过的东西当成验证过的。</p>
+</section>
+<section id="id4">
+<h2>容易栽的跟头<a class="headerlink" href="#id4" title="此标题的永久链接">¶</a></h2>
+<p><strong>坑 1：以为 job 文件会自己清理干净。</strong> 它会清理，但只在正常退出的时候。我做完这一篇的实验之后去数了一下那个目录，里面有 80 个文件，日期从早上零点一路排到实验结束。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ls -1 "$LOCALAPPDATA/scrapy/job_files" | wc -l
+80
+</pre></div>
+</div>
+<p>这些文件是爬虫进程正常结束时自己删掉的漏网之鱼，进程被强杀、机器重启、调试时按了 Ctrl-C，都留下一个。它们本身很小，两百字节一个，麻烦在于<strong>里面存着对应进程的端口和令牌</strong>。放在那儿不占地方，但它是一份凭证。</p>
+<p>定期清一下。目录位置是系统状态目录下的 <code class="docutils literal notranslate"><span class="pre">scrapy/job_files</span></code>，Windows 上是 <code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%\scrapy\job_files</span></code>，Linux 上在 XDG 的状态目录里。要换位置就用 <code class="docutils literal notranslate"><span class="pre">REMOTE_CONTROL_JOBS_DIR</span></code> 指过去，我在实验里就是这么做的。</p>
+<p><strong>坑 2：把 <code class="docutils literal notranslate"><span class="pre">REMOTE_CONTROL_ENABLED</span></code> 设成真，以为它就在跑。</strong> 这个扩展依赖 asyncio 支持，不满足条件的时候会自动禁用，日志里只会留一行。它不会让爬虫启动失败，所以很容易被忽略。<strong>判断方法不是看配置，是看启动日志里有没有那一行监听端口的提示</strong>，或者直接去 job 文件目录看有没有新文件生成。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2026</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">06</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">35</span> <span class="p">[</span><span class="n">scrapy</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">remote_control</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Remote</span> <span class="n">control</span> <span class="n">HTTP</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span> <span class="n">port</span> <span class="mi">55861</span> <span class="p">(</span><span class="n">job</span> <span class="mi">23336</span><span class="o">-</span><span class="n">fd8b8f49a4c748a0943644cb03425f50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>有这一行才算真的起来了。</p>
+<p><strong>坑 3：连本机端口的实验被系统代理拦下去。</strong> 这个坑害我多花了一轮。我用 <code class="docutils literal notranslate"><span class="pre">scrapy</span> <span class="pre">bench</span></code> 的时候第一次拿到的是三次 502 重试然后放弃，报错里一个字都没提代理，看起来像是那个本机服务端坏了。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2026-09-13 06:03:35 [scrapy.downloadermiddlewares.retry] ERROR: Gave up retrying &lt;GET http://localhost:8998?total=100000&amp;show=20&gt; (failed 3 times): 502 Bad Gateway
+</pre></div>
+</div>
+<p>原因是这台机器配了系统级 HTTP 代理，请求走了代理，代理不知道 <code class="docutils literal notranslate"><span class="pre">localhost:8998</span></code> 是什么就回了个 502。清掉代理环境变量，或者把 <code class="docutils literal notranslate"><span class="pre">localhost</span></code> 和 <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> 加进 <code class="docutils literal notranslate"><span class="pre">NO_PROXY</span></code>，立刻就正常了。<strong>任何连本机地址的实验，跑之前先确认这一条。</strong> 它后面还会以各种面貌出现，比如 curl 能通而程序不通，或者「本地接口莫名其妙返回 502」。</p>
+<p><strong>坑 4：拿 <code class="docutils literal notranslate"><span class="pre">elapsed_time_seconds</span></code> 估算批量任务的耗时。</strong> 这个值量的是蜘蛛自己的运行时间，进程启动和 egg 解包不算在里面。实测一个任务墙钟跑了三秒半，日志里的 <code class="docutils literal notranslate"><span class="pre">elapsed_time_seconds</span></code> 是 1.36 秒，差了大约两秒。任务规模小的时候这个比例很大，你要是按它去规划「一千个任务要多久」，算出来的数字会明显偏乐观。</p>
+<p><strong>坑 5：scrapyd 的 <code class="docutils literal notranslate"><span class="pre">bind_address</span></code> 用默认值。</strong> 它默认监听 <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code>，全网可达。而它的 <code class="docutils literal notranslate"><span class="pre">schedule</span></code> 接口允许启动服务器上任意一个已上传的爬虫。这两件事凑在一起，等于给任何能访问到 6800 端口的人递了一把钥匙，他可以让你的爬虫跑起来。生产环境改成内网地址，外面套一层带认证的反向代理。</p>
+<p><strong>坑 6：job 文件里那个 0600 权限在 Windows 上不等于安全。</strong> Scrapy 写这个文件的时候确实按 <code class="docutils literal notranslate"><span class="pre">0o600</span></code> 创建，那是 POSIX 的权限位。Windows 上走的是另一套访问控制模型，这些位是模拟出来的，实际的文件访问控制由 NTFS 的 ACL 决定。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">Administrator</span> <span class="mi">197121</span> <span class="mi">204</span> <span class="n">Sep</span> <span class="mi">13</span> <span class="mi">01</span><span class="p">:</span><span class="mi">02</span> <span class="mi">10724</span><span class="o">-</span><span class="mi">58</span><span class="n">d7fa7328cf4a8b8af06a18b42d51d5</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>我在 Windows 上看到的就是上面这个样子，不是 0600。<strong>别把权限位当成唯一一道防线</strong>，真正的约束是那个文件里存着能在爬虫进程里执行任意代码的令牌，所以它不该出现在聊天窗口、工单、截图或者代码仓库里。</p>
+</section>
+<section id="id5">
+<h2>小结<a class="headerlink" href="#id5" title="此标题的永久链接">¶</a></h2>
+<p>这一篇的三块内容，其实在回答同一个问题，你怎么知道线上那个东西还好。</p>
+<p>RemoteControl 给的是最细的一层。它让你在一个跑着的进程里执行代码，实时统计、当前状态、甚至临时改一点东西都能做到。2.19 把它做成默认开启，说明官方认为「能看见运行中的进程」是个基础需求。但它也是一扇需要认真对待的门，能执行代码这个能力本身就是风险。</p>
+<p>scrapyd 给的是中间一层。打包、上传、调度、取数据，全走 HTTP 接口，一套流程下来每个任务的边界都清清楚楚。我实测那一条链路的时候，最有用的是它把「墙钟耗时」和「蜘蛛耗时」分开了，这两个数摆在一起你才知道调度开销占了多少。</p>
+<p><code class="docutils literal notranslate"><span class="pre">bench</span></code> 给的是最底下那一层，机器的能力上限。这个数字跟你的蜘蛛没有直接关系，但它是你换机器、换配置时唯一可比的基准。</p>
+<p>这一篇里我最想让你注意的还是那个 502。它跟爬虫、跟 Scrapy、跟这台机器的性能都没有关系，纯粹是环境里有个代理在中间。<strong>排错的时候，先确认自己的实验环境是干净的，比钻研报错信息更省时间。</strong> 我在这个系列里搭了不少本地服务端做对照实验，每一次都要先过这一关。</p>
+<p>到这里十一篇就写完了。从第一个爬虫到能上线的服务，中间那些我自己踩过的坑基本都放进来了。写的时候我尽量把「我测出来的」和「文档上说的」分开，凡是标了数字的地方都有对应的运行记录，你可以照着复现。</p>
+<p>这篇里要是有哪里讲得不对，欢迎拍砖。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy10%20-%20%E5%B7%A5%E7%A8%8B%E5%8C%96.html" class="btn btn-neutral float-left" title="每天15分钟玩转Scrapy10 - 工程化" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="other/about.html" class="btn btn-neutral float-right" title="联系我" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2017, Xiong Neng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

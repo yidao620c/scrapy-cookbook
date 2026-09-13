@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>每天15分钟玩转Scrapy08 - 性能调优 &mdash; scrapy-cookbook 0.2.2 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="每天15分钟玩转Scrapy09 - 异步" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy09%20-%20%E5%BC%82%E6%AD%A5.html" />
+    <link rel="prev" title="每天15分钟玩转Scrapy07 - 反爬" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            scrapy-cookbook
+          </a>
+              <div class="version">
+                0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy01%20-%20%E6%9E%B6%E6%9E%84%E5%85%A8%E6%99%AF%E4%B8%8E%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%88%AC%E8%99%AB.html">每天15分钟玩转Scrapy01 - 架构全景与第一个爬虫</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy02%20-%20Spider%20%E4%B8%8E%E9%80%89%E6%8B%A9%E5%99%A8.html">每天15分钟玩转Scrapy02 - Spider 与选择器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy03%20-%20%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%90%BD%E5%BA%93.html">每天15分钟玩转Scrapy03 - 数据建模与落库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy04%20-%20%E7%99%BB%E5%BD%95%E4%B8%8ECookie.html">每天15分钟玩转Scrapy04 - 登录与Cookie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy05%20-%20%E5%8A%A8%E6%80%81%E9%A1%B5%E9%9D%A2.html">每天15分钟玩转Scrapy05 - 动态页面</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy06%20-%20%E5%AA%92%E4%BD%93%E7%AE%A1%E9%81%93.html">每天15分钟玩转Scrapy06 - 媒体管道</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html">每天15分钟玩转Scrapy07 - 反爬</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">每天15分钟玩转Scrapy08 - 性能调优</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">开场</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">速度先量再调</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1. 两组蜘蛛的对比</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#autothrottle">2. AutoThrottle 自己找节奏</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">并发到底能开多大</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">域级并发形同虚设</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">瓶颈常常不在网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">把请求省下来，把数据看清楚</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">1. 缓存与统计</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">容易栽的跟头</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy09%20-%20%E5%BC%82%E6%AD%A5.html">每天15分钟玩转Scrapy09 - 异步</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy10%20-%20%E5%B7%A5%E7%A8%8B%E5%8C%96.html">每天15分钟玩转Scrapy10 - 工程化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy11%20-%20%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E7%BB%B4.html">每天15分钟玩转Scrapy11 - 部署与运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other/about.html">联系我</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scrapy-cookbook</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">每天15分钟玩转Scrapy08 - 性能调优</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/每天15分钟玩转Scrapy08 - 性能调优.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scrapy08">
+<h1>每天15分钟玩转Scrapy08 - 性能调优<a class="headerlink" href="#scrapy08" title="此标题的永久链接">¶</a></h1>
+<section id="id1">
+<h2>开场<a class="headerlink" href="#id1" title="此标题的永久链接">¶</a></h2>
+<p>性能这件事，我的经验是可以量出来的部分比想象中多。</p>
+<p>很多人调优的顺序是反的。先凭感觉把并发开大，发现没变快，再加缓存，还是没变快，最后开始怀疑框架。真正该做的第一步是量出瓶颈在哪，而这件事比想象的简单，因为 Scrapy 已经把每个环节的耗时和计数都记下来了，你只要知道去看哪几个数。</p>
+<p>这一篇分成三块。先把旋钮认全，说清楚哪个真的有用。然后是我自己做的一组并发对照，结果有点出乎意料，因为这个坑我花了不少时间才定位到。最后说一件容易被忽略的事，瓶颈经常不在网络那一侧。</p>
+<p>所有数字都来自同一台机器上的一次运行，横向比较有效，绝对值别当成硬指标。这类测量对机器状态很敏感，我建议你在自己的环境里重跑一遍。</p>
+</section>
+<section id="id2">
+<h2>速度先量再调<a class="headerlink" href="#id2" title="此标题的永久链接">¶</a></h2>
+<p>聊调优之前先把变量数清楚。延迟类的旋钮只有三个。</p>
+<p>| 旋钮 | 作用 |
+|——|——|
+| <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span></code> | 同一个域两次请求之间的基准间隔 |
+| <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY_JITTER</span></code> | 在基准上抖动的幅度，0.5 表示上下 50% |
+| <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span></code> | 同一个域同时在飞的请求数 |</p>
+<p>第三个旋钮有个 2.18 起的新玩法，<code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span></code> 设成 0 表示不限。别急着用，这个开关的意思是「把对方的承受能力当成无限」。</p>
+<p>第二个旋钮是新面孔。老教程会让你设 <code class="docutils literal notranslate"><span class="pre">RANDOMIZE_DOWNLOAD_DELAY</span> <span class="pre">=</span> <span class="pre">True</span></code>，<strong>这个设置现在弃用了</strong>，2.19 上显式设置它还会打 <code class="docutils literal notranslate"><span class="pre">ScrapyDeprecationWarning</span></code>。新写法是 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY_JITTER</span> <span class="pre">=</span> <span class="pre">0.5</span></code>，语义从「开不开抖动」变成「抖多大」。</p>
+<p>而 0.5 恰好就是 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY_JITTER</span></code> 的默认值，抖动公式是 <code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">uniform(-jitter,</span> <span class="pre">jitter))</span></code>。拿默认值算，设了 1 秒延迟，实际间隔在 0.5 到 1.5 秒之间随机。</p>
+<section id="id3">
+<h3>1. 两组蜘蛛的对比<a class="headerlink" href="#id3" title="此标题的永久链接">¶</a></h3>
+<p>我做了两个蜘蛛。一个是链式翻页，解析完第 1 页才知道第 2 页在哪。另一个把 10 个页面 URL 一次性全抛出去。</p>
+<p>同一个站点、同样 100 条数据，三套参数各跑一次。</p>
+<p>链式翻页那一组。</p>
+<p>| 配置 | 耗时 |
+| 模板默认，1 秒延迟加单并发 | 11.72 秒 |
+| 关掉延迟，并发开到 8 | 3.08 秒 |
+| AutoThrottle 目标并发 2.0 | 3.43 秒 |</p>
+<p>并行起点那一组。</p>
+<p>| 配置 | 耗时 |
+|——|——|
+| 模板默认，1 秒延迟加单并发 | 10.38 秒 |
+| 关掉延迟，并发开到 8 | 0.98 秒 |
+| AutoThrottle 目标并发 2.0 | 2.02 秒 |</p>
+<p><strong>并行起点那组快了 10.6 倍，链式那组只快了 3.8 倍。</strong> 差距不在参数上，在蜘蛛的形状上。</p>
+<p>链式翻页每一页的 URL 都藏在上一个响应里，同一时刻永远只有一个请求在飞。并发数调到 8 也好调到 80 也好，没有第二个请求可以并发。它那 3.8 倍全是关掉延迟挣来的。</p>
+<p><img alt="蜘蛛形状决定并发上限" src="https://static.xiongneng.me/scrapy-08-spider-shape-20260913062827.png" /></p>
+<p>这件事我当初没想明白，看着 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span></code> 一路加，耗时纹丝不动，还以为是 Scrapy 没读配置。<strong>并发数只对天生并行的起点有用。</strong> 列表页上能一次拿到全部详情页链接的那种结构，是该花力气优化的形状。我自己的感受是，蜘蛛的形状定下来之前，调参基本是在给自己找事。</p>
+<p>另一个数字也很说明问题。同一个草稿模板跑出来的 <code class="docutils literal notranslate"><span class="pre">scrapy</span> <span class="pre">crawl</span></code> 项目，默认就带着 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span> <span class="pre">=</span> <span class="pre">1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span> <span class="pre">=</span> <span class="pre">1</span></code>。写代码练手没问题，真要抓点东西，这两个值得自己动。</p>
+<p>⚠️ 顺带提一个测量口径的陷阱。我一开始从 <code class="docutils literal notranslate"><span class="pre">process_request</span></code> 开始掐表，算出来的平均耗时 2994 毫秒。改用 <code class="docutils literal notranslate"><span class="pre">request.meta[&quot;download_latency&quot;]</span></code>（这个值由 HTTP 下载器写在纯网络往返那一步）之后，平均只有 266 毫秒。</p>
+<p>差了 11 倍，多出来的全是<strong>调度器排队的时间</strong>。你设了 1 秒延迟，请求就得在队列里等着，这段等待跟站点快慢毫无关系。只看一个平均数就判断站点变慢了，很容易得出反向结论。</p>
+</section>
+<section id="autothrottle">
+<h3>2. AutoThrottle 自己找节奏<a class="headerlink" href="#autothrottle" title="此标题的永久链接">¶</a></h3>
+<p>手工调延迟的问题在于，你不知道对方能承受多少。设保守了浪费时间，设激进了被封。</p>
+<p><code class="docutils literal notranslate"><span class="pre">AutoThrottle</span></code> 的思路是把这件事交给反馈。它盯着每次请求的响应延迟，延迟高就放慢、降并发，延迟低就加快。你要告诉它的是「我大概想同时发几个请求」，而不是「延迟设几秒」。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">AUTOTHROTTLE_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">AUTOTHROTTLE_START_DELAY</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">AUTOTHROTTLE_MAX_DELAY</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">AUTOTHROTTLE_TARGET_CONCURRENCY</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">AUTOTHROTTLE_DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>打开调试之后能看到它在线调参。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">slot</span><span class="p">:</span> <span class="n">quotes</span><span class="o">.</span><span class="n">toscrape</span><span class="o">.</span><span class="n">com</span> <span class="o">|</span> <span class="n">conc</span><span class="p">:</span> <span class="mi">7</span> <span class="o">|</span> <span class="n">delay</span><span class="p">:</span>  <span class="mi">361</span> <span class="n">ms</span> <span class="p">(</span><span class="o">+</span><span class="mi">261</span><span class="p">)</span> <span class="o">|</span> <span class="n">latency</span><span class="p">:</span>  <span class="mi">722</span> <span class="n">ms</span> <span class="o">|</span> <span class="n">size</span><span class="p">:</span>  <span class="mi">1962</span> <span class="nb">bytes</span>
+<span class="n">slot</span><span class="p">:</span> <span class="n">quotes</span><span class="o">.</span><span class="n">toscrape</span><span class="o">.</span><span class="n">com</span> <span class="o">|</span> <span class="n">conc</span><span class="p">:</span> <span class="mi">6</span> <span class="o">|</span> <span class="n">delay</span><span class="p">:</span>  <span class="mi">356</span> <span class="n">ms</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>   <span class="o">|</span> <span class="n">latency</span><span class="p">:</span>  <span class="mi">702</span> <span class="n">ms</span> <span class="o">|</span> <span class="n">size</span><span class="p">:</span>  <span class="mi">2875</span> <span class="nb">bytes</span>
+<span class="n">slot</span><span class="p">:</span> <span class="n">quotes</span><span class="o">.</span><span class="n">toscrape</span><span class="o">.</span><span class="n">com</span> <span class="o">|</span> <span class="n">conc</span><span class="p">:</span> <span class="mi">5</span> <span class="o">|</span> <span class="n">delay</span><span class="p">:</span>  <span class="mi">354</span> <span class="n">ms</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>   <span class="o">|</span> <span class="n">latency</span><span class="p">:</span>  <span class="mi">705</span> <span class="n">ms</span> <span class="o">|</span> <span class="n">size</span><span class="p">:</span>  <span class="mi">1940</span> <span class="nb">bytes</span>
+<span class="n">slot</span><span class="p">:</span> <span class="n">quotes</span><span class="o">.</span><span class="n">toscrape</span><span class="o">.</span><span class="n">com</span> <span class="o">|</span> <span class="n">conc</span><span class="p">:</span> <span class="mi">4</span> <span class="o">|</span> <span class="n">delay</span><span class="p">:</span>  <span class="mi">353</span> <span class="n">ms</span> <span class="p">(</span><span class="o">+</span><span class="mi">0</span><span class="p">)</span>   <span class="o">|</span> <span class="n">latency</span><span class="p">:</span>  <span class="mi">707</span> <span class="n">ms</span> <span class="o">|</span> <span class="n">size</span><span class="p">:</span>  <span class="mi">1802</span> <span class="nb">bytes</span>
+<span class="n">slot</span><span class="p">:</span> <span class="n">quotes</span><span class="o">.</span><span class="n">toscrape</span><span class="o">.</span><span class="n">com</span> <span class="o">|</span> <span class="n">conc</span><span class="p">:</span> <span class="mi">3</span> <span class="o">|</span> <span class="n">delay</span><span class="p">:</span>  <span class="mi">352</span> <span class="n">ms</span> <span class="p">(</span><span class="o">+</span><span class="mi">0</span><span class="p">)</span>   <span class="o">|</span> <span class="n">latency</span><span class="p">:</span>  <span class="mi">704</span> <span class="n">ms</span> <span class="o">|</span> <span class="n">size</span><span class="p">:</span>  <span class="mi">1937</span> <span class="nb">bytes</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">conc</span></code> 是当前并发，后面括号里是这次相对上次调整了多少。第一次它按站点延迟把延迟从 100 毫秒一口气顶到 361 毫秒，之后稳定在 352 毫秒附近不再摆动。</p>
+<p>实测耗时 2.02 秒对不限速的 0.98 秒。慢了一倍，但这一倍买来的是「不把对方打挂」。</p>
+<p>⚠️ 开了 AutoThrottle 就别再定死 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span></code>，两个旋钮抢同一个位置，结果不好预期。规范做法是把 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span></code> 留着默认，让扩展自己接管。</p>
+</section>
+</section>
+<section id="id4">
+<h2>并发到底能开多大<a class="headerlink" href="#id4" title="此标题的永久链接">¶</a></h2>
+<p>这个问题我原本以为有标准答案，量完之后发现答案有点意外。说实话我一开始是照着文档的语义去理解的，以为有这个旋钮就等于有了这道闸门。</p>
+<p>先搭一个可控的环境。我写了个服务端，<code class="docutils literal notranslate"><span class="pre">/index?n=&amp;ms=</span></code> 返回 n 条指向详情页的链接，<code class="docutils literal notranslate"><span class="pre">/item/&lt;i&gt;?ms=</span></code> 每条固定延迟 ms 毫秒。要测并发的效果，这样最干净，服务器本身不成为变量。</p>
+<p>然后一个蜘蛛，从 <code class="docutils literal notranslate"><span class="pre">/index</span></code> 一次拿到 50 个详情页链接。50 页，每页延迟 200 毫秒，串行跑完的理论值是 10.2 秒。</p>
+<p>改 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span></code>，跑四次。</p>
+<p>| 页级并发 | 耗时 | 相对串行的加速 |
+|———|——|————–|
+| 1 | 10.23 秒 | 1.0 倍 |
+| 4 | 2.73 秒 | 3.7 倍 |
+| 16 | 1.09 秒 | 9.4 倍 |
+| 32 | 0.83 秒 | 12.4 倍 |</p>
+<p>收益递减看得很清楚。从 1 到 4 拿了 3.7 倍，从 16 到 32 只多拿了 0.3 倍多一点。原因是这组数据里服务器本身没有压力，唯一的开销就是那个 200 毫秒的固定延迟。真实站点上加并发会先撞到对方的能力上限，再撞到你自己机器的连接数，收益曲线比这个更早变平。</p>
+<p>到这里都还正常。真正让我意外的是下一个实验。你想想看，一个按域限流的旋钮，如果它不生效，那前面那些「安全爬取」的建议就全落空了。</p>
+<section id="id5">
+<h3>域级并发形同虚设<a class="headerlink" href="#id5" title="此标题的永久链接">¶</a></h3>
+<p>我一直以为限制爬速的安全做法是按住 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span></code>，把页级并发放开。这个直觉在 2.19 上不成立。</p>
+<p>同一组 5 个页面，把页面延迟调到 1000 毫秒，这样串行和并行的差别会拉到 5 秒左右，看得更清楚。三套配置各跑一遍。</p>
+<p>| 页级并发 | 域级并发 | 耗时 |
+|———|———|——|
+| 1 | 8 | 5.09 秒 |
+| 32 | 1 | 1.07 秒 |
+| 1 | 1 | 5.09 秒 |</p>
+<p>第一行和第三行的耗时几乎一样，5.09 对 5.09。<strong>域级并发设成 8 和设成 1 没有任何区别，决定耗时的只有页级并发那个值。</strong></p>
+<p>中间那一行更说明问题。页级并发 32，域级并发 1，按定义「同一个域同时只允许 1 个请求在飞」，它应该跑出 5 秒。实际是 1.07 秒，全部并行。</p>
+<p>我不信，去读了运行时状态。下载器上挂着一个 <code class="docutils literal notranslate"><span class="pre">slots</span></code> 字典，按域分槽，每个槽有自己的并发值。我把槽位的值打出来，确实读到了 1。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>槽位并发=1，共 7 次「队列非空且有空闲槽」的出队事件：
+相对时刻       正在传输           队列剩余           空闲槽
+--------------------------------------------------
+0.000s     0              1              1
+0.008s     0              1              1
+0.008s     0              1              1
+0.008s     0              1              1
+0.008s     0              1              1
+0.008s     0              1              1
+0.009s     0              1              1
+
+出队时看到的「正在传输」峰值 = 0
+</pre></div>
+</div>
+<p>这组数字就是答案。<strong>槽位声明了并发 1，7 次出队全挤在 9 毫秒之内完成，而每次出队的时候「正在传输」都是 0。</strong></p>
+<p><img alt="域级并发闸门为什么不合上" src="https://static.xiongneng.me/scrapy-08-domain-slot-20260913062827.png" /></p>
+<p>「正在传输」这个计数是用来判断槽位有没有空的依据。它一直是 0，说明每个请求都在被计入这个计数之前就已经离开队列了。限流判断发生在这一步之后，于是这道闸门根本没有机会合上。</p>
+<p>⚠️ 我去读了 2.19 的下载器源码，机制是清楚的。出队那段是个同步的 <code class="docutils literal notranslate"><span class="pre">while</span></code> 循环，条件里有一句 <code class="docutils literal notranslate"><span class="pre">slot.free_transfer_slots()</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>，而它的实现是「槽位并发数减去正在传输的个数」。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">slot</span><span class="o">.</span><span class="n">queue</span> <span class="ow">and</span> <span class="n">slot</span><span class="o">.</span><span class="n">free_transfer_slots</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">slot</span><span class="o">.</span><span class="n">lastseen</span> <span class="o">=</span> <span class="n">now</span>
+    <span class="n">request</span><span class="p">,</span> <span class="n">queue_dfd</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+    <span class="n">_schedule_coro</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_download</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queue_dfd</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>问题在于 <code class="docutils literal notranslate"><span class="pre">_schedule_coro</span></code> 只是把协程排进调度，不会立刻执行。而「把自己加进正在传输」这一句，是在那个协程真正跑起来之后才执行的。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="n">slot</span><span class="o">.</span><span class="n">transferring</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>于是整个 <code class="docutils literal notranslate"><span class="pre">while</span></code> 循环在同一个同步块里把队列抽空了，那期间 <code class="docutils literal notranslate"><span class="pre">transferring</span></code> 一直是空的，<code class="docutils literal notranslate"><span class="pre">free_transfer_slots()</span></code> 就一直返回完整的并发数。闸门全程没合上。</p>
+<p>页级并发走的是另一条路，它在下载器自己的 <code class="docutils literal notranslate"><span class="pre">active</span></code> 集合上判断，跟这个循环无关，所以它是真的生效。</p>
+<p>⚠️ 说清楚这个机制不是为了让你去改源码。<strong>对你的实际价值是，在 2.19 上想控制爬速，别指望 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span></code>。</strong> 它的值会被读进槽位，看起来配置生效了，实际不起作用。</p>
+<p>那控速该用什么。三个层次按优先级。</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span></code> 是唯一真正生效的并发旋钮，先调它</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span></code> 加 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY_JITTER</span></code> 控制请求间隔，这个也生效</p></li>
+<li><p>要按域精细控制，用 <code class="docutils literal notranslate"><span class="pre">AutoThrottle</span></code> 扩展，它按每个域自己的响应时间动态调</p></li>
+</ol>
+<p>至于 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span> <span class="pre">=</span> <span class="pre">0</span></code> 这个「不限」的写法，我建议别用。它的含义是把对方的承受能力当成无限的，而这在真实站点上从来不是真的。</p>
+</section>
+</section>
+<section id="id6">
+<h2>瓶颈常常不在网络<a class="headerlink" href="#id6" title="此标题的永久链接">¶</a></h2>
+<p>前面几节全在调网络那一侧的参数。但爬虫有两个半场，下载是一半，处理 item 是另一半。第二半被我忽略了很久。说到底，一只爬虫跑得快不快，取决于两个半场里慢的那个。</p>
+<p>管道是串行执行的。引擎把每个 item 依次交给管道链上的每一个组件，前一个处理完才轮到下一个。这条链是串的，<strong>管道里的耗时是累加的，而且它跟下载不是并行关系，是一条独立的串行链路。</strong></p>
+<p>我拿一个故意变慢的管道做对照。蜘蛛抓 100 页，每页服务端延迟 50 毫秒，页级并发开到 16。管道里加一个人为延迟，从 0 调到 20 毫秒每条。</p>
+<p>| 管道延迟 | 耗时 |
+|———|——|
+| 0 | 0.70 秒 |
+| 20 毫秒/条 | 2.42 秒 |</p>
+<p>一百条乘以 20 毫秒是 2.0 秒，跟实测的 2.42 秒基本对得上。而下载那一半的计算值是 100 乘 50 毫秒除以 16，大约 0.31 秒。</p>
+<p><strong>管道的串行耗时已经比下载的并行耗时大好几倍，这时候并发调多大都没有用。</strong> 你把页级并发放到 64，整个爬虫的耗时还是 2 秒出头，因为上游在等下游。</p>
+<p>管道长这样。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SlowPipeline</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_ms</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_ms</span> <span class="o">=</span> <span class="n">sleep_ms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crawler</span> <span class="o">=</span> <span class="n">crawler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">crawler</span><span class="o">.</span><span class="n">stats</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_crawler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">crawler</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s2">"PIPELINE_SLEEP_MS"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">crawler</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_ms</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">inc_value</span><span class="p">(</span><span class="s2">"pipeline/slept"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">item</span>
+</pre></div>
+</div>
+<p>⚠️ 这段代码里用的是 <code class="docutils literal notranslate"><span class="pre">time.sleep</span></code>，它会把整个事件循环按住。这是教学用的极端例子，但它对应的真实写法一点不夸张，<strong>同步的数据库客户端、同步的 HTTP 请求、同步的文件写入，全都是同一个效果。</strong></p>
+<p>判断自己的管道有没有成为瓶颈，有个很简单的办法。跑完之后对比这两个数。</p>
+<p><img alt="下载半场与处理半场" src="https://static.xiongneng.me/scrapy-08-pipeline-bottleneck-20260913062827.png" /></p>
+<p>| 统计项 | 看什么 |
+|——-|——–|
+| <code class="docutils literal notranslate"><span class="pre">downloader/response_count</span></code> 除以总耗时 | 下载的实际吞吐 |
+| <code class="docutils literal notranslate"><span class="pre">item_scraped_count</span></code> 除以总耗时 | 整条链路的实际吞吐 |</p>
+<p>两个数差得越多，说明管道那一段吃掉了越多时间。还有一个更直接的信号，<code class="docutils literal notranslate"><span class="pre">item_scraped_count</span></code> 明显小于 <code class="docutils literal notranslate"><span class="pre">response_received_count</span></code>，而这个差距又不是因为解析没命中，那大概率就是管道在拖。</p>
+<p>解法有两条。一条是把管道改成异步的，<code class="docutils literal notranslate"><span class="pre">process_item</span></code> 写成 <code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">def</span></code>，Scrapy 会 await 它，用 <code class="docutils literal notranslate"><span class="pre">asyncpg</span></code>、<code class="docutils literal notranslate"><span class="pre">aiomysql</span></code> 这类异步驱动把阻塞去掉。另一条是把管道里那些重活挪出主流程，比如先进一个内存队列，由单独的协程批量写。</p>
+<p>第一条更彻底，代价是你的数据库驱动得换。第二条改动小，但引入了队列，进程被强杀的时候队列里的数据会丢，得自己权衡。</p>
+<p>顺带说一个观察。这事儿我在跑这些对照的时候看得很清楚，同一份蜘蛛在管道没压力的情况下，从并发 16 加到 32 只快了 0.3 秒左右。<strong>在你还没量出瓶颈在哪之前，动并发这个旋钮的收益上限其实很低。</strong> 先把两个吞吐数字比一比，比一直试参数效率高得多。</p>
+</section>
+<section id="id7">
+<h2>把请求省下来，把数据看清楚<a class="headerlink" href="#id7" title="此标题的永久链接">¶</a></h2>
+<p>调优这件事有两个配套动作，一个帮你少发请求，一个帮你把已经发生的事看清楚。</p>
+<p>调试选择器的时候反复抓同一个页面是常态，每次都真发请求既慢又对不起对方。把响应缓存到本地能省掉这部分。而跑完之后的那一大坨统计，是排查问题的第一手材料，比翻日志快得多。</p>
+<p>这两件事都属于「调优之前的准备工作」，但它们的回报很直接。</p>
+<section id="id8">
+<h3>1. 缓存与统计<a class="headerlink" href="#id8" title="此标题的永久链接">¶</a></h3>
+<p>调试选择器的时候反复抓同一个页面很常见。<code class="docutils literal notranslate"><span class="pre">HTTPCACHE_ENABLED</span></code> 就是为这个准备的，它把响应原样存到磁盘，下次同样的请求直接读盘。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HTTPCACHE_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">HTTPCACHE_EXPIRATION_SECS</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">HTTPCACHE_DIR</span> <span class="o">=</span> <span class="s2">"httpcache"</span>
+</pre></div>
+</div>
+<p>同一个十页站点连跑两次，差距是这样的。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">第一次</span>  <span class="s1">'httpcache/firsthand'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'httpcache/miss'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'httpcache/store'</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="s1">'elapsed_time_seconds'</span><span class="p">:</span> <span class="mf">10.958</span>
+
+<span class="n">第二次</span>  <span class="s1">'httpcache/hit'</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="s1">'elapsed_time_seconds'</span><span class="p">:</span> <span class="mf">0.041</span>
+</pre></div>
+</div>
+<p>10.96 秒掉到 0.041 秒，两百多倍。<code class="docutils literal notranslate"><span class="pre">firsthand</span></code> 是「第一次见到、真的发了请求」，<code class="docutils literal notranslate"><span class="pre">hit</span></code> 是「直接读盘」。</p>
+<p>⚠️ 缓存有个副作用很容易咬人。你改了选择器、改了 parse 逻辑，跑起来结果没变，原因就是它还在吃旧缓存。这时候去清 <code class="docutils literal notranslate"><span class="pre">HTTPCACHE_DIR</span></code>，<strong>千万别先怀疑代码</strong>。缓存这东西在调试期挺好用，忘了它的存在就挺烦人。</p>
+<p>缓存之外，还有一类信息只有统计里有。跑完那一刻打印的那一大坨字典，不是日志噪音，是排查问题的第一手材料。</p>
+<p>我在完整案例里把关键的几项挑出来，让蜘蛛在关闭时自己写成报表。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">write_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spider</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crawler</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"start_time"</span><span class="p">)</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="k">if</span> <span class="n">start</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="p">)</span>
+        <span class="n">net_n</span><span class="p">,</span> <span class="n">net_ms</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="s2">"latency/net_count"</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="s2">"latency/net_total_ms"</span><span class="p">)</span>
+        <span class="n">wall_n</span><span class="p">,</span> <span class="n">wall_ms</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="s2">"latency/wall_count"</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="s2">"latency/wall_total_ms"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>⚠️ 这里踩了两个时序坑。<code class="docutils literal notranslate"><span class="pre">elapsed_time_seconds</span></code> 和 <code class="docutils literal notranslate"><span class="pre">finish_reason</span></code> 这两个值由 <code class="docutils literal notranslate"><span class="pre">CoreStats</span></code> 扩展在 <code class="docutils literal notranslate"><span class="pre">spider_closed</span></code> 里写，而我们的回调可能排在它前面，读出来就是 0 和空。耗时自己从 <code class="docutils literal notranslate"><span class="pre">start_time</span></code> 算，结束原因直接用信号传进来的 <code class="docutils literal notranslate"><span class="pre">reason</span></code>。</p>
+<p>报表长这样。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>======== 本次爬取报表 ========
+结束原因        : finished
+请求总数        : 64
+响应 200        : 63
+抓到的 item     : 60
+下载的图片      : 60
+图片失败        : 0
+重试次数        : 0
+重试放弃        : 0
+UA 轮换次数     : 64
+去重过滤        : 0
+平均网络往返    : 266 ms（64 次）
+平均端到端耗时  : 2994 ms（64 次，含排队）
+总耗时          : 10.75 秒
+</pre></div>
+</div>
+<p>最后聊两句日志。<code class="docutils literal notranslate"><span class="pre">LOG_LEVEL</span></code> 默认 <code class="docutils literal notranslate"><span class="pre">INFO</span></code>，<code class="docutils literal notranslate"><span class="pre">LOG_FILE</span></code> 能把它落到文件。2.19 加了 <code class="docutils literal notranslate"><span class="pre">LOG_COLOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">LOG_INSTALL_ROOT_HANDLER</span></code>，终端上的颜色和根 logger 的接管都能配。</p>
+<p>⚠️ 别图省事把 <code class="docutils literal notranslate"><span class="pre">LOG_LEVEL</span></code> 设成 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 然后跑一整天。媒体管道在 DEBUG 下会给每张图打三到四行，抓十万张图就是几十万行日志，磁盘写满只是时间问题。要看细节就开一次短跑，看完关掉。</p>
+</section>
+</section>
+<section id="id9">
+<h2>容易栽的跟头<a class="headerlink" href="#id9" title="此标题的永久链接">¶</a></h2>
+<p><strong>坑 1：把 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS_PER_DOMAIN</span></code> 当成限速的主要手段。</strong> 这是这一篇里最贵的一个坑，因为我花了很长时间才定位到。实测数据是页级并发 1 加域级并发 8 跑了 5.09 秒，页级并发 32 加域级并发 1 跑了 1.07 秒。域级那个值在运行时的槽位里确实读到了，但它拦不住请求。<strong>在 2.19 上想控速就用 <code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span></code> 加 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DELAY</span></code>，要按域精细控制就上 <code class="docutils literal notranslate"><span class="pre">AutoThrottle</span></code>。</strong></p>
+<p><strong>坑 2：以为并发开得越大越快。</strong> 同一组 50 页的对照里，从并发 1 到 4 拿了 3.7 倍，从 16 到 32 只多拿了 0.3 倍多一点。并发这个旋钮的收益是有上限的，撞到上限之后再往上加，多出来的只有你自己机器的连接数和对方的判断。跑一次矩阵，找到拐点，比一直往上试有效。</p>
+<p><strong>坑 3：管道里做同步 IO。</strong> 这是第二个隐形的瓶颈。管道是在 item 处理链上串行执行的，里面阻塞多久，整条链路就等多久。实测里管道加 20 毫秒每条，100 条就让总耗时从 0.70 秒涨到 2.42 秒，这时候下载并发调到多少都不影响结果。<strong>判据很简单，<code class="docutils literal notranslate"><span class="pre">item_scraped_count</span></code> 除以总耗时，跟 <code class="docutils literal notranslate"><span class="pre">downloader/response_count</span></code> 除以总耗时比一比，差得多就说明管道在拖。</strong></p>
+<p><strong>坑 4：在 <code class="docutils literal notranslate"><span class="pre">spider_closed</span></code> 回调里读 <code class="docutils literal notranslate"><span class="pre">elapsed_time_seconds</span></code> 和 <code class="docutils literal notranslate"><span class="pre">finish_reason</span></code>。</strong> 这两个值由 <code class="docutils literal notranslate"><span class="pre">CoreStats</span></code> 扩展在它的 <code class="docutils literal notranslate"><span class="pre">spider_closed</span></code> 里写，你的回调排在它前面就会读到 0 和空字符串。耗时自己从 <code class="docutils literal notranslate"><span class="pre">start_time</span></code> 算，结束原因直接用信号传进来的 <code class="docutils literal notranslate"><span class="pre">reason</span></code> 参数。</p>
+<p><strong>坑 5：改了选择器，结果没变，去怀疑代码。</strong> 大概率是 <code class="docutils literal notranslate"><span class="pre">HTTPCACHE_ENABLED</span></code> 还开着。缓存按请求指纹命中，你改的是解析逻辑不是请求地址，它照样给你旧响应。先去清 <code class="docutils literal notranslate"><span class="pre">HTTPCACHE_DIR</span></code> 再排查，能省下不少时间。</p>
+<p><strong>坑 6：图省事把 <code class="docutils literal notranslate"><span class="pre">LOG_LEVEL</span></code> 设成 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 跑一整天。</strong> 媒体管道在 DEBUG 下会给每张图打三到四行，抓十万张图就是几十万行日志，磁盘写满只是时间问题。要看细节就开一次短跑，看完关掉。<strong>这个坑的特点是不会立刻出事，等你发现的时候盘已经满了。</strong></p>
+<p><strong>坑 7：<code class="docutils literal notranslate"><span class="pre">CONCURRENT_REQUESTS</span> <span class="pre">=</span> <span class="pre">0</span></code>。</strong> 这个写法表示不限并发。它的语义是把对方的承受能力当成无限的，而真实站点上从来不是。要压满本机能力的时候可以短跑测一下上限，别把这行留在生产配置里。</p>
+</section>
+<section id="id10">
+<h2>小结<a class="headerlink" href="#id10" title="此标题的永久链接">¶</a></h2>
+<p>这一篇如果只留一句话，我会留这句，先量再调。</p>
+<p>前三块内容其实都在讲同一件事的不同侧面。蜘蛛的形状决定了并发的上限，链式翻页的蜘蛛并发开多大都只有 3.8 倍，天生并行的起点能拿 10.6 倍。并发这个旋钮本身有拐点，实测里 16 到 32 只多 0.3 倍。管道是第二条串行链路，它慢下来之后网络那侧的参数全都失效。</p>
+<p>而域级并发失效那件事给了我一个提醒。<strong>配置被读进去了，不等于配置生效了。</strong> 那个 8 在运行时的槽位里明明白白读得到，行为上却跟 1 完全一样。要不是我去钩住出队那一步看 <code class="docutils literal notranslate"><span class="pre">transferring</span></code> 的实际值，光看日志是永远发现不了的。你手上的一个配置项到底有没有在干活，这件事得靠测量回答。</p>
+<p>我自己的习惯是，每次要给爬虫提速之前先跑一次基线，把这几项记下来。<code class="docutils literal notranslate"><span class="pre">downloader/response_count</span></code>、<code class="docutils literal notranslate"><span class="pre">item_scraped_count</span></code>、总耗时，三个数除以一下就是两个吞吐。改一个参数再跑一次，两个吞吐都动了才算改对了地方。</p>
+<p>这一篇里的数字都是在一台机器上一次跑出来的，绝对值换台机器就不一样。留着它们是让你看趋势，不是当硬指标用。</p>
+<p>这篇里要是有哪里讲得不对，欢迎拍砖。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy07%20-%20%E5%8F%8D%E7%88%AC.html" class="btn btn-neutral float-left" title="每天15分钟玩转Scrapy07 - 反爬" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="%E6%AF%8F%E5%A4%A915%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%ACScrapy09%20-%20%E5%BC%82%E6%AD%A5.html" class="btn btn-neutral float-right" title="每天15分钟玩转Scrapy09 - 异步" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2017, Xiong Neng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
