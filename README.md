@@ -4,7 +4,7 @@
 
 Scrapy 是 Python 开发的著名爬虫框架，目前使用非常广泛。本教程基于最新的 Scrapy 2.19 版本编写，通过实际的例子带领你一步步掌握 Scrapy 核心。
 
-- readthedocs: [http://scrapy-cookbook.readthedocs.io/zh_CN/latest/](http://scrapy-cookbook.readthedocs.io/zh_CN/latest/)
+**在线阅读:**  [http://scrapy-cookbook.readthedocs.io/zh_CN/latest/](http://scrapy-cookbook.readthedocs.io/zh_CN/latest/)
 
 ## 目录结构
 
