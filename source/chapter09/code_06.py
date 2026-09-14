@@ -1,0 +1,1 @@
+reactor.startRunning(installSignalHandlers=False)
